@@ -41,9 +41,6 @@ public abstract class Ingredient {
 	
     @Column(nullable = false)
 	private double quantity;
-	
-	public Ingredient() {
-	}
 
 	public String getId() {
 		return id;
