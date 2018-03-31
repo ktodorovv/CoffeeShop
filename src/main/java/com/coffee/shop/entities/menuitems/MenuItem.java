@@ -25,15 +25,6 @@ public abstract class MenuItem {
     @Column(nullable = false, unique = true)
     private String name;
     
-    @Column(nullable = false)
-    private double price;
-    
-    @Column(nullable = false)
-    private double calories;
-    
-    @Column(nullable = false)
-    private double quantity;
-    
     @Column(name = "picture_link", nullable = false)
     private String pictureLink;
 
@@ -52,31 +43,7 @@ public abstract class MenuItem {
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	public double getPrice() {
-		return price;
-	}
-
-	public void setPrice(double price) {
-		this.price = price;
-	}
-
-	public double getCalories() {
-		return calories;
-	}
-
-	public void setCalories(double calories) {
-		this.calories = calories;
-	}
-
-	public double getQuantity() {
-		return quantity;
-	}
-
-	public void setQuantity(double quantity) {
-		this.quantity = quantity;
-	}
-
+	
 	public String getPictureLink() {
 		return pictureLink;
 	}
@@ -84,4 +51,10 @@ public abstract class MenuItem {
 	public void setPictureLink(String pictureLink) {
 		this.pictureLink = pictureLink;
 	}
+	
+	public abstract double getPrice();
+	
+	public abstract double getQuantity();
+	
+	public abstract double getCalories();
 }
