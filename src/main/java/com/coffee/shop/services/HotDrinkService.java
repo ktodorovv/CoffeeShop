@@ -13,5 +13,7 @@ public interface HotDrinkService {
 	
 	// persist item
 	
+	// persist custom hot drink
+	
 	// remove item
 }
