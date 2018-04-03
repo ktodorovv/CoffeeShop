@@ -1,6 +1,6 @@
 package com.coffee.shop.models.view.ingedient;
 
-public class AdditionalIngredientView {
+public class IngredientView {
 
 	private String id;
 	

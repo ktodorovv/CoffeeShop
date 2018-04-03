@@ -1,11 +1,8 @@
 package com.coffee.shop.models.binding.ingredient;
 
 import com.coffee.shop.entities.enums.IngredientType;
-import com.coffee.shop.models.binding.enums.IngredientDtoBaseOrAdditional;
 
 public class IngredientDto {
-	
-	private IngredientDtoBaseOrAdditional type;
 	
 	private IngredientType ingredientType;
 	
@@ -16,14 +13,6 @@ public class IngredientDto {
 	private double price;
 	
 	private double quantity;
-
-	public IngredientDtoBaseOrAdditional getType() {
-		return type;
-	}
-
-	public void setType(IngredientDtoBaseOrAdditional type) {
-		this.type = type;
-	}
 
 	public IngredientType getIngredientType() {
 		return ingredientType;

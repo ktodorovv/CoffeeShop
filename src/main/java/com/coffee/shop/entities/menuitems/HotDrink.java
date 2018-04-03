@@ -13,8 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.coffee.shop.entities.enums.HotDrinkType;
-import com.coffee.shop.entities.ingredients.AdditionalIngredient;
-import com.coffee.shop.entities.ingredients.BaseIngredient;
+import com.coffee.shop.entities.ingredients.Ingredient;
 
 @Entity
 @Table(name = "hot_drinks")
@@ -25,13 +24,13 @@ public class HotDrink extends MenuItem {
 	
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "base_ingredient_id", referencedColumnName = "id")
-	private BaseIngredient baseIngredient;
+	private Ingredient baseIngredient;
 	
 	@ManyToMany
 	@JoinTable(name = "additional_ingredients_hot_drinks",
 	joinColumns = @JoinColumn(name = "hot_drink_id", referencedColumnName = "id"),
 	inverseJoinColumns = @JoinColumn(name = "additional_ingredient_id", referencedColumnName = "id"))
-	private Set<AdditionalIngredient> additionalIngredients;
+	private Set<Ingredient> additionalIngredients;
 	
 	public HotDrink() {
 		this.additionalIngredients = new HashSet<>();
@@ -45,19 +44,19 @@ public class HotDrink extends MenuItem {
 		this.type = type;
 	}
 
-	public BaseIngredient getBaseIngredient() {
+	public Ingredient getBaseIngredient() {
 		return baseIngredient;
 	}
 
-	public void setBaseIngredient(BaseIngredient baseIngredient) {
+	public void setBaseIngredient(Ingredient baseIngredient) {
 		this.baseIngredient = baseIngredient;
 	}
 
-	public Set<AdditionalIngredient> getAdditionalIngredients() {
+	public Set<Ingredient> getAdditionalIngredients() {
 		return additionalIngredients;
 	}
 
-	public void setAdditionalIngredients(Set<AdditionalIngredient> additionalIngredients) {
+	public void setAdditionalIngredients(Set<Ingredient> additionalIngredients) {
 		this.additionalIngredients = additionalIngredients;
 	}
 
@@ -66,7 +65,7 @@ public class HotDrink extends MenuItem {
 		double finalPrice = 0.0;
 		finalPrice += this.baseIngredient.getPrice();
 		
-		for (AdditionalIngredient ingredient : this.additionalIngredients) {
+		for (Ingredient ingredient : this.additionalIngredients) {
 			finalPrice += ingredient.getPrice();
 		}
 		
@@ -78,7 +77,7 @@ public class HotDrink extends MenuItem {
 		double finalQuantity = 0.0;
 		finalQuantity += this.baseIngredient.getQuantity();
 		
-		for (AdditionalIngredient ingredient: this.additionalIngredients) {
+		for (Ingredient ingredient: this.additionalIngredients) {
 			finalQuantity += ingredient.getQuantity();
 		}
 		
@@ -90,7 +89,7 @@ public class HotDrink extends MenuItem {
 		double finalCalories = 0.0;
 		finalCalories += this.baseIngredient.getCalories();
 		
-		for (AdditionalIngredient ingredient: this.additionalIngredients) {
+		for (Ingredient ingredient: this.additionalIngredients) {
 			finalCalories += ingredient.getCalories();
 		}
 		

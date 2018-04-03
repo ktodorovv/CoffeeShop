@@ -2,8 +2,7 @@ package com.coffee.shop.models.view.menuitem;
 
 import java.util.Set;
 
-import com.coffee.shop.models.view.ingedient.AdditionalIngredientView;
-import com.coffee.shop.models.view.ingedient.BaseIngredientView;
+import com.coffee.shop.models.view.ingedient.IngredientView;
 
 public class MenuItemSingleView {
 
@@ -19,11 +18,11 @@ public class MenuItemSingleView {
 	
 	private double quantity;
 	
-	private Set<AdditionalIngredientView> additionalIngredients;
+	private Set<IngredientView> additionalIngredients;
 	
 	private String type;
 	
-	private BaseIngredientView baseIngredient;
+	private IngredientView baseIngredient;
 
 	public String getId() {
 		return id;
@@ -73,11 +72,11 @@ public class MenuItemSingleView {
 		this.quantity = quantity;
 	}
 
-	public Set<AdditionalIngredientView> getAdditionalIngredients() {
+	public Set<IngredientView> getAdditionalIngredients() {
 		return additionalIngredients;
 	}
 
-	public void setAdditionalIngredients(Set<AdditionalIngredientView> additionalIngredients) {
+	public void setAdditionalIngredients(Set<IngredientView> additionalIngredients) {
 		this.additionalIngredients = additionalIngredients;
 	}
 
@@ -89,11 +88,11 @@ public class MenuItemSingleView {
 		this.type = type;
 	}
 
-	public BaseIngredientView getBaseIngredient() {
+	public IngredientView getBaseIngredient() {
 		return baseIngredient;
 	}
 
-	public void setBaseIngredient(BaseIngredientView baseIngredient) {
+	public void setBaseIngredient(IngredientView baseIngredient) {
 		this.baseIngredient = baseIngredient;
 	}
 }
