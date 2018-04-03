@@ -6,16 +6,16 @@ import com.coffee.shop.models.binding.ingredient.IngredientDto;
 import com.coffee.shop.models.view.ingedient.IngredientView;
 
 public interface IngredientService {
-
-	// get all base coffee ingredients
-	
-	// get all base tea ingredients
-	
-	// get all additional tea ingredients
-	
-	// get all additional coffee ingrediens
 	
 	List<IngredientView> getAll();
+	
+	List<IngredientView> getAllBaseCoffeeIngredients();
+	
+	List<IngredientView> getAllBaseTeaIngredients();
+	
+	List<IngredientView> getAllAdditionalCoffeeIngredients();
+	
+	List<IngredientView> getAllAdditionalTeaIngredients();
 	
 	IngredientView getOneById(String id);
 	

@@ -3,7 +3,9 @@ package com.coffee.shop.serviceImpl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import com.coffee.shop.entities.enums.IngredientType;
 import com.coffee.shop.entities.ingredients.Ingredient;
 import com.coffee.shop.models.binding.ingredient.IngredientDto;
 import com.coffee.shop.models.view.ingedient.IngredientView;
@@ -11,14 +13,15 @@ import com.coffee.shop.repositories.IngredientRepository;
 import com.coffee.shop.services.IngredientService;
 import com.coffee.shop.utils.interfaces.ModelParser;
 
-public class AdditionalIngredientServiceImpl implements IngredientService {
+@Service
+public class IngredientServiceImpl implements IngredientService {
 
 	private final ModelParser modelParser;
 	
 	private final IngredientRepository ingredientRepo;
 	
 	@Autowired
-	public AdditionalIngredientServiceImpl(ModelParser modelParser, IngredientRepository ingredientRepo) {
+	public IngredientServiceImpl(ModelParser modelParser, IngredientRepository ingredientRepo) {
 		this.modelParser = modelParser;
 		this.ingredientRepo = ingredientRepo;
 	}
@@ -65,5 +68,40 @@ public class AdditionalIngredientServiceImpl implements IngredientService {
 	public void removeById(String id) {
 		Ingredient ingredient = this.ingredientRepo.findOneById(id);
 		this.ingredientRepo.delete(ingredient);
+	}
+
+	@Override
+	public List<IngredientView> getAllBaseCoffeeIngredients() {
+		List<IngredientView> ingredientViews = this.getAllIngredientsByType(IngredientType.COFFEE_BASE_INGREDIENT);
+		
+		return ingredientViews;
+	}
+
+	@Override
+	public List<IngredientView> getAllBaseTeaIngredients() {
+		List<IngredientView> ingredientViews = this.getAllIngredientsByType(IngredientType.TEA_BASE_INGREDIENT);
+		
+		return ingredientViews;
+	}
+
+	@Override
+	public List<IngredientView> getAllAdditionalCoffeeIngredients() {
+		List<IngredientView> ingredientViews = this.getAllIngredientsByType(IngredientType.COFFEE_ADDITIONAL_INGREDIENT);
+		
+		return ingredientViews;
+	}
+
+	@Override
+	public List<IngredientView> getAllAdditionalTeaIngredients() {
+		List<IngredientView> ingredientViews = this.getAllIngredientsByType(IngredientType.TEA_ADDITIONAL_INGREDIENT);
+		
+		return ingredientViews;
+	}
+	
+	private List<IngredientView> getAllIngredientsByType(IngredientType ingredientType) {
+		List<Ingredient> ingredients = this.ingredientRepo.findAllByIngredientType(ingredientType.toString());
+		List<IngredientView> ingredientViews = this.modelParser.convert(ingredients, IngredientView.class);
+		
+		return ingredientViews;
 	}
 }

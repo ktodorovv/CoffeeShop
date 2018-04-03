@@ -5,12 +5,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-public class HomeController {
+public class HomeController extends BaseController {
 
 	@GetMapping("/")
 	public ModelAndView gethome() {
-		ModelAndView mav = new ModelAndView("home");
-		
-		return mav;
+		return super.view("home");
 	}
 }
