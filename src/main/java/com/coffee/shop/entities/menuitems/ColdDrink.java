@@ -17,7 +17,6 @@ public class ColdDrink extends MenuItem {
 	@Column(nullable = false)
 	private double quantity;
 
-	@Override
 	public double getPrice() {
 		return price;
 	}
@@ -26,7 +25,6 @@ public class ColdDrink extends MenuItem {
 		this.price = price;
 	}
 
-	@Override
 	public double getCalories() {
 		return calories;
 	}
@@ -35,7 +33,6 @@ public class ColdDrink extends MenuItem {
 		this.calories = calories;
 	}
 
-	@Override
 	public double getQuantity() {
 		return quantity;
 	}

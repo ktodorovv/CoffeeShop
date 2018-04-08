@@ -30,7 +30,6 @@ public class Food extends MenuItem {
 		this.foodType = foodType;
 	}
 
-	@Override
 	public double getCalories() {
 		return calories;
 	}
@@ -39,7 +38,6 @@ public class Food extends MenuItem {
 		this.calories = calories;
 	}
 
-	@Override
 	public double getPrice() {
 		return price;
 	}
@@ -48,7 +46,6 @@ public class Food extends MenuItem {
 		this.price = price;
 	}
 
-	@Override
 	public double getQuantity() {
 		return quantity;
 	}

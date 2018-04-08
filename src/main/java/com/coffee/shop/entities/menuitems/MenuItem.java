@@ -51,10 +51,4 @@ public abstract class MenuItem {
 	public void setPictureLink(String pictureLink) {
 		this.pictureLink = pictureLink;
 	}
-	
-	public abstract double getPrice();
-	
-	public abstract double getQuantity();
-	
-	public abstract double getCalories();
 }

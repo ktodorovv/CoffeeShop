@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import com.coffee.shop.utils.interfaces.ModelParser;
 
-@Component
 public class ModelParserImpl implements ModelParser {
 
     private ModelMapper modelMapper;

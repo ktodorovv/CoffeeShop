@@ -1,19 +1,25 @@
 package com.coffee.shop.services;
 
+import java.util.List;
+
+import com.coffee.shop.models.binding.menuitem.HotDrinkDto;
+import com.coffee.shop.models.view.menuitem.MenuItemListView;
+import com.coffee.shop.models.view.menuitem.MenuItemSingleView;
+
 public interface HotDrinkService {
-	// get all
+	List<MenuItemListView> getAll();
 	
-	// get all teas
+	List<MenuItemListView> getAllTeas();
 	
-	// get all coffees
+	List<MenuItemListView> getAllCoffees();
 	
-	// get one by id
+	MenuItemSingleView getOneById(String id);
 	
-	// edit item
+	void edit(HotDrinkDto foodDto, String id);
 	
-	// persist item
+	void persist(HotDrinkDto hotDrinkDto);
 	
 	// persist custom hot drink
 	
-	// remove item
+	void remove(String id);
 }

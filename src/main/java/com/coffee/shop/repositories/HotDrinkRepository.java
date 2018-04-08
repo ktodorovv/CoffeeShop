@@ -11,4 +11,6 @@ import com.coffee.shop.entities.menuitems.HotDrink;
 public interface HotDrinkRepository extends JpaRepository<HotDrink, String>{
 	
 	List<HotDrink> findAllByType(String type);
+	
+	HotDrink findOneById(String id);
 }

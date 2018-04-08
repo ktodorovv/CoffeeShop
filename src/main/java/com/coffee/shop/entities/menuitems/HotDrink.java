@@ -59,40 +59,4 @@ public class HotDrink extends MenuItem {
 	public void setAdditionalIngredients(Set<Ingredient> additionalIngredients) {
 		this.additionalIngredients = additionalIngredients;
 	}
-
-	@Override
-	public double getPrice() {
-		double finalPrice = 0.0;
-		finalPrice += this.baseIngredient.getPrice();
-		
-		for (Ingredient ingredient : this.additionalIngredients) {
-			finalPrice += ingredient.getPrice();
-		}
-		
-		return finalPrice;
-	}
-
-	@Override
-	public double getQuantity() {
-		double finalQuantity = 0.0;
-		finalQuantity += this.baseIngredient.getQuantity();
-		
-		for (Ingredient ingredient: this.additionalIngredients) {
-			finalQuantity += ingredient.getQuantity();
-		}
-		
-		return finalQuantity;
-	}
-
-	@Override
-	public double getCalories() {
-		double finalCalories = 0.0;
-		finalCalories += this.baseIngredient.getCalories();
-		
-		for (Ingredient ingredient: this.additionalIngredients) {
-			finalCalories += ingredient.getCalories();
-		}
-		
-		return finalCalories;
-	}
 }
