@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<link rel="stylesheet" type="text/css" th:href="@{/css/index.css}"/>
+<meta charset="ISO-8859-1" />
+<title>My Shop</title>
+</head>
+<body>
+	<th:block th:include="~{home :: header-fragment}"></th:block>
+	<h1>All ingredients:</h1>
+	<th:block th:each="ingredient : ${ingredients}">
+		<p th:text="${ingredient.getName()}"></p>
+		<p th:text="${ingredient.getCalories()}"></p>
+		<p th:text="${ingredient.getPrice()}"></p>
+		<p th:text="${ingredient.getQuantity()}"></p>
+		<p><a th:href="@{/ingredients/edit/{id}(id=${ingredient.getId()})}">Edit</a></p>
+	</th:block>
+</body>
+</html>
