@@ -8,4 +8,5 @@ import com.coffee.shop.entities.menuitems.ColdDrink;
 @Repository
 public interface ColdDrinkRepository extends JpaRepository<ColdDrink, String>{
 
+	ColdDrink findOneById(String id);
 }

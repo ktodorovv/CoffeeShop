@@ -14,7 +14,7 @@ import com.coffee.shop.entities.enums.IngredientType;
 
 @Entity
 @Table(name = "ingredients")
-public abstract class Ingredient {
+public class Ingredient {
 
     @Id
     @GeneratedValue(generator = "UUID")

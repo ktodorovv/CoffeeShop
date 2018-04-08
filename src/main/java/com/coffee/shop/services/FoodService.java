@@ -1,13 +1,20 @@
 package com.coffee.shop.services;
 
+import java.util.List;
+
+import com.coffee.shop.models.binding.menuitem.FoodDto;
+import com.coffee.shop.models.view.menuitem.MenuItemListView;
+import com.coffee.shop.models.view.menuitem.MenuItemSingleView;
+
 public interface FoodService {
-	// get all
 	
-	// get one by id
+	List<MenuItemListView> getAll();
 	
-	// edit item
+	MenuItemSingleView getOnyById(String id);
 	
-	// persist item
+	void edit(FoodDto foodDto, String id);
 	
-	// remove item
+	void persist(FoodDto foodDto);
+	
+	void removeById(String id);
 }

@@ -3,7 +3,6 @@ package com.coffee.shop.models.binding.menuitem;
 import java.util.Set;
 
 import com.coffee.shop.entities.enums.HotDrinkType;
-import com.coffee.shop.models.binding.ingredient.IngredientDto;
 
 public class HotDrinkDto {
 
@@ -13,9 +12,9 @@ public class HotDrinkDto {
 	
 	private HotDrinkType type;
 	
-	private IngredientDto baseIngredient;
+	private String baseIngredient;
 	
-	private Set<IngredientDto> additionalIngredients;
+	private Set<String> additionalIngredients;
 
 	public String getName() {
 		return name;
@@ -41,19 +40,19 @@ public class HotDrinkDto {
 		this.type = type;
 	}
 
-	public IngredientDto getBaseIngredient() {
+	public String getBaseIngredient() {
 		return baseIngredient;
 	}
 
-	public void setBaseIngredient(IngredientDto baseIngredient) {
+	public void setBaseIngredient(String baseIngredient) {
 		this.baseIngredient = baseIngredient;
 	}
 
-	public Set<IngredientDto> getAdditionalIngredients() {
+	public Set<String> getAdditionalIngredients() {
 		return additionalIngredients;
 	}
 
-	public void setAdditionalIngredients(Set<IngredientDto> additionalIngredients) {
+	public void setAdditionalIngredients(Set<String> additionalIngredients) {
 		this.additionalIngredients = additionalIngredients;
 	}
 }

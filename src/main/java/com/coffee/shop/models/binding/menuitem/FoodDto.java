@@ -13,6 +13,8 @@ public class FoodDto {
 	private double calories;
 	
 	private double quantity;
+	
+	private double price;
 
 	public String getName() {
 		return name;
@@ -52,5 +54,13 @@ public class FoodDto {
 
 	public void setQuantity(double quantity) {
 		this.quantity = quantity;
+	}
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
 	}
 }
