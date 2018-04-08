@@ -16,4 +16,10 @@ public abstract class BaseController {
 		
 		return modelAndView;
 	}
+	
+	protected ModelAndView redirect(String url) {
+		ModelAndView modelAndView = new ModelAndView("redirect:" + url);
+		
+		return modelAndView;
+	}
 }
