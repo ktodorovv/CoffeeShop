@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<link rel="stylesheet" type="text/css" th:href="@{/css/index.css}"/>
+<meta charset="ISO-8859-1" />
+<title>My Shop</title>
+</head>
+<body>
+	<th:block th:include="~{home :: header-fragment}"></th:block>
+	<h1>Add a cold drink</h1>
+	<form method="post" th:action="@{/menu/add/cold-drink}">
+		<label>Name</label>
+		<input type="text" name="name"/>
+		<label>Picture Link</label>
+		<input type="text" name="pictureLink"/>
+		<label>Calories</label>
+		<input name="calories" type="number" min="0.00" step="0.01"/>
+		<label>Price</label>
+		<input name="price" type="number" min="0.00" step="0.01"/>
+		<label>Quantity (in grams)</label>
+		<input name="quantity" type="number" min="0.00" step="0.01"/>
+		<input type="submit" value="Add Cold Drink"/>
+	</form>
+</body>
+</html>

@@ -1,10 +1,32 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/index.css}"/>
+<meta charset="ISO-8859-1" />
+<title>My Shop</title>
 </head>
 <body>
-
+	<th:block th:include="~{home :: header-fragment}"></th:block>	
+	<form method="post" th:action="@{/ingredients/edit/{id}(id=${ingredient.getId()})}">
+		<label>Type</label>
+		<select name="ingredientType">
+			<th:block th:each="t : ${ingredient.getIngredientType().values()}">
+				<th:block th:switch="${ingredient.getIngredientType()}">
+					<option th:case="${t}" th:value="${t}" th:text="${t}" selected></option>
+					<option th:case="*" th:value="${t}" th:text="${t}"></option>
+				</th:block>
+			</th:block>
+		</select>
+		<label>Name</label>
+		<input type="text" name="name" th:value="${ingredient.getName()}"/>
+		<label>Calories</label>
+		<input name="calories" type="number" min="0.00" step="0.01" th:value="${ingredient.getCalories()}"/>
+		<label>Price</label>
+		<input name="price" type="number" min="0.00" step="0.01" th:value="${ingredient.getPrice()}"/>
+		<label>Quantity (in grams)</label>
+		<input name="quantity" type="number" min="0.00" step="0.01" th:value="${ingredient.getQuantity()}"/>
+		<input type="submit" value="Edit Ingredient"/>
+	</form>
 </body>
 </html>

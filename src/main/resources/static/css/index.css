@@ -23,3 +23,8 @@ table, th, td {
 	display: inline-block;
 	font-size: 16px;
 }
+
+.ingredient-class div {
+	float: left;
+	border: 1px solid black;
+}

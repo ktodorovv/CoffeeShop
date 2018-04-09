@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -43,5 +44,19 @@ public class IngredientController extends BaseController {
 		this.ingredientService.persist(ingredientDto);
 		
 		return super.redirect("/ingredients/add");
+	}
+	
+	@GetMapping("/edit/{id}")
+	public ModelAndView getEditIngredient(@PathVariable String id) {
+		IngredientView ingredient = this.ingredientService.getOneById(id);
+		
+		return super.view("/ingredients/edit-ingredient", "ingredient", ingredient);
+	}
+	
+	@PostMapping("/edit/{id}")
+	public ModelAndView postEditIngredient(@PathVariable String id, @ModelAttribute IngredientDto ingredientDto) {
+		this.ingredientService.editAdditionalIngredient(ingredientDto, id);
+		
+		return super.redirect("/ingredients/all");
 	}
 }
