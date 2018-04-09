@@ -9,7 +9,7 @@
 <body>
 	<th:block th:include="~{home :: header-fragment}"></th:block>
 	<h1>All ingredients:</h1>
-	<div class="ingredient-class" th:each="ingredient : ${ingredients}">
+	<div class="item-class" th:each="ingredient : ${ingredients}">
 		<div th:text="${ingredient.getName()}"></div>
 		<div th:text="${ingredient.getCalories()}"></div>
 		<div th:text="${ingredient.getPrice()}"></div>

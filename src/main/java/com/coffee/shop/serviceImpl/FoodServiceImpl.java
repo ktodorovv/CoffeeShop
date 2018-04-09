@@ -2,6 +2,8 @@ package com.coffee.shop.serviceImpl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.coffee.shop.entities.menuitems.Food;
 import com.coffee.shop.models.binding.menuitem.FoodDto;
 import com.coffee.shop.models.view.menuitem.MenuItemListView;
@@ -10,6 +12,7 @@ import com.coffee.shop.repositories.FoodRepository;
 import com.coffee.shop.services.FoodService;
 import com.coffee.shop.utils.interfaces.ModelParser;
 
+@Service
 public class FoodServiceImpl implements FoodService {
 
 	private final ModelParser modelParser;

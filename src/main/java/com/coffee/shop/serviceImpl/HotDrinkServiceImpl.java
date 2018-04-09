@@ -3,6 +3,8 @@ package com.coffee.shop.serviceImpl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.coffee.shop.entities.menuitems.HotDrink;
 import com.coffee.shop.models.binding.menuitem.HotDrinkDto;
 import com.coffee.shop.models.view.menuitem.MenuItemListView;
@@ -12,6 +14,7 @@ import com.coffee.shop.services.HotDrinkService;
 import com.coffee.shop.utils.HotDrinkCalculator;
 import com.coffee.shop.utils.interfaces.ModelParser;
 
+@Service
 public class HotDrinkServiceImpl implements HotDrinkService {
 
 	private final ModelParser modelParser;

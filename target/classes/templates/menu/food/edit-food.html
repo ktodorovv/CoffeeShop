@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<link rel="stylesheet" type="text/css" th:href="@{/css/index.css}"/>
+<meta charset="ISO-8859-1" />
+<title>My Shop</title>
+</head>
+<body>
+	<th:block th:include="~{home :: header-fragment}"></th:block>	
+	<form method="post" th:action="@{/menu/edit/food/{id}(id=${food.getId()})}">
+		<label>Type</label>
+		<select name="foodType">
+			<th:block th:each="t : ${food.getFoodType().values()}">
+				<th:block th:switch="${food.getFoodType()}">
+					<option th:case="${t}" th:value="${t}" th:text="${t}" selected></option>
+					<option th:case="*" th:value="${t}" th:text="${t}"></option>
+				</th:block>
+			</th:block>
+		</select>
+		<label>Name</label>
+		<input type="text" name="name" th:value="${food.getName()}"/>
+		<label>Calories</label>
+		<input name="calories" type="number" min="0.00" step="0.01" th:value="${food.getCalories()}"/>
+		<label>Price</label>
+		<input name="price" type="number" min="0.00" step="0.01" th:value="${food.getPrice()}"/>
+		<label>Quantity (in grams)</label>
+		<input name="quantity" type="number" min="0.00" step="0.01" th:value="${food.getQuantity()}"/>
+		<label>Picture Link</label>
+		<input name="pictureLink" type="text" th:value="${food.getPictureLink()}" />
+		<input type="submit" value="Edit Food"/>
+	</form>
+</body>
+</html>

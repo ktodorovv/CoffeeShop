@@ -24,7 +24,7 @@ table, th, td {
 	font-size: 16px;
 }
 
-.ingredient-class div {
+.item-class div {
 	float: left;
 	border: 1px solid black;
 }

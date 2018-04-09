@@ -2,10 +2,13 @@ package com.coffee.shop.models.view.menuitem;
 
 import java.util.Set;
 
+import com.coffee.shop.entities.enums.FoodType;
+import com.coffee.shop.entities.enums.HotDrinkType;
 import com.coffee.shop.models.view.ingedient.IngredientView;
 
 public class MenuItemSingleView {
-
+	// TODO: probably should create a few objects out of this one - too big
+	
 	private String id;
 	
 	private String name;
@@ -23,6 +26,10 @@ public class MenuItemSingleView {
 	private String type;
 	
 	private IngredientView baseIngredient;
+	
+	private FoodType foodType;
+	
+	private HotDrinkType hotDrinkType;
 
 	public String getId() {
 		return id;
@@ -94,5 +101,21 @@ public class MenuItemSingleView {
 
 	public void setBaseIngredient(IngredientView baseIngredient) {
 		this.baseIngredient = baseIngredient;
+	}
+
+	public FoodType getFoodType() {
+		return foodType;
+	}
+
+	public void setFoodType(FoodType foodType) {
+		this.foodType = foodType;
+	}
+
+	public HotDrinkType getHotDrinkType() {
+		return hotDrinkType;
+	}
+
+	public void setHotDrinkType(HotDrinkType hotDrinkType) {
+		this.hotDrinkType = hotDrinkType;
 	}
 }

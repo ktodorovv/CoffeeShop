@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<link rel="stylesheet" type="text/css" th:href="@{/css/index.css}"/>
+<meta charset="ISO-8859-1" />
+<title>My Shop</title>
+</head>
+<body>
+	<th:block th:include="~{home :: header-fragment}"></th:block>	
+	<form method="post" th:action="@{/menu/edit/cold-drinks/{id}(id=${menuItem.getId()})}">
+		<label>Name</label>
+		<input type="text" name="name" th:value="${menuItem.getName()}"/>
+		<label>Calories</label>
+		<input name="calories" type="number" min="0.00" step="0.01" th:value="${menuItem.getCalories()}"/>
+		<label>Price</label>
+		<input name="price" type="number" min="0.00" step="0.01" th:value="${menuItem.getPrice()}"/>
+		<label>Quantity (in grams)</label>
+		<input name="quantity" type="number" min="0.00" step="0.01" th:value="${menuItem.getQuantity()}"/>
+		<label>Picture Link</label>
+		<input name="pictureLink" type="text" th:value="${menuItem.getPictureLink()}" />
+		<input type="submit" value="Edit Cold Drink"/>
+	</form>
+</body>
+</html>

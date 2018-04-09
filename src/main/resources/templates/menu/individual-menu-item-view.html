@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<link rel="stylesheet" type="text/css" th:href="@{/css/index.css}"/>
+<meta charset="ISO-8859-1" />
+<title>My Shop</title>
+</head>
+<body>
+	<th:block th:include="~{home :: header-fragment}"></th:block>
+	<h1>All cold drinks:</h1>
+	<h1>Name:</h1>
+	<div th:text="${menuItem.getName()}"></div>
+	<h1>Picture:</h1>
+	<div><img th:src="${menuItem.getPictureLink()}"/></div>
+	<h1>Price:</h1>
+	<div th:text="|${menuItem.getPrice()} leva|"></div>
+	<h1>Calories:</h1>
+	<div th:text="|${menuItem.getCalories()} calories|"></div>
+	<h1>Quantity(in g/ml)</h1>
+	<div th:text="|${menuItem.getQuantity()} grams|"></div>
+<!-- 		TODO: -->
+<!-- 		type -->
+<!-- 		base ingredient -->
+<!-- 		additional ingredients -->
+</body>
+</html>
