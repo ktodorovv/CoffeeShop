@@ -99,7 +99,7 @@ public class IngredientServiceImpl implements IngredientService {
 	}
 	
 	private List<IngredientView> getAllIngredientsByType(IngredientType ingredientType) {
-		List<Ingredient> ingredients = this.ingredientRepo.findAllByIngredientType(ingredientType.toString());
+		List<Ingredient> ingredients = this.ingredientRepo.findAllByIngredientType(ingredientType);
 		List<IngredientView> ingredientViews = this.modelParser.convert(ingredients, IngredientView.class);
 		
 		return ingredientViews;

@@ -1,6 +1,8 @@
 package com.coffee.shop.controllers;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,13 +14,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.coffee.shop.entities.enums.FoodType;
+import com.coffee.shop.entities.enums.HotDrinkType;
 import com.coffee.shop.models.binding.menuitem.ColdDrinkDto;
 import com.coffee.shop.models.binding.menuitem.FoodDto;
+import com.coffee.shop.models.binding.menuitem.HotDrinkDto;
+import com.coffee.shop.models.view.ingedient.IngredientView;
 import com.coffee.shop.models.view.menuitem.MenuItemListView;
 import com.coffee.shop.models.view.menuitem.MenuItemSingleView;
 import com.coffee.shop.services.ColdDrinkService;
 import com.coffee.shop.services.FoodService;
 import com.coffee.shop.services.HotDrinkService;
+import com.coffee.shop.services.IngredientService;
 
 @Controller
 @RequestMapping("/menu")
@@ -30,11 +36,14 @@ public class MenuItemController extends BaseController {
 	
 	private final HotDrinkService hotDrinkService;
 	
+	private final IngredientService ingredientService;
+	
 	@Autowired
-	public MenuItemController(ColdDrinkService coldDrinkService, FoodService foodService, HotDrinkService hotDrinkService) {
+	public MenuItemController(ColdDrinkService coldDrinkService, FoodService foodService, HotDrinkService hotDrinkService, IngredientService ingredientService) {
 		this.coldDrinkService = coldDrinkService;
 		this.foodService = foodService;
 		this.hotDrinkService = hotDrinkService;
+		this.ingredientService = ingredientService;
 	}
 	
 	@GetMapping("/add/cold-drink")
@@ -115,5 +124,66 @@ public class MenuItemController extends BaseController {
 		MenuItemSingleView food = this.foodService.getOnyById(id);
 		
 		return super.view("menu/individual-menu-item-view", "menuItem", food);
+	}
+	
+	// HOT DRINKS
+	// TODO: probably unite all the list views - all teas, all coffees, all foods, all cold drinks.
+	// TODO: Probably use some interceptor, in order to let them know if we're adding tea, coffee, food or a cold drink.
+	
+	@GetMapping("/all/hot-drinks/{id}")
+	public ModelAndView getOneHotDrink(@PathVariable String id) {
+		MenuItemSingleView hotDrink = this.hotDrinkService.getOneById(id);
+		
+		return super.view("menu/individual-menu-item-view", "menuItem", hotDrink);
+	}
+	
+	@GetMapping("/all/hot-drinks/tea")
+	public ModelAndView getAllTeas() {
+		List<MenuItemListView> teas = this.hotDrinkService.getAllTeas();
+		
+		return super.view("menu/hot-drinks/all-hot-drinks", "hotDrinks", teas);
+	}
+	
+	@GetMapping("/all/hot-drinks/coffee")
+	public ModelAndView getAllCoffees() {
+		List<MenuItemListView> coffees = this.hotDrinkService.getAllCoffees();
+	
+		return super.view("menu/hot-drinks/all-hot-drinks", "hotDrinks", coffees);
+	}
+	
+	@GetMapping("/add/coffee")
+	public ModelAndView getAddCoffee() {
+		Map<String, List<IngredientView>> ingredients = new HashMap<>();
+		List<IngredientView> baseIngredients = this.ingredientService.getAllBaseCoffeeIngredients();
+		List<IngredientView> additionalIngredients = this.ingredientService.getAllAdditionalCoffeeIngredients();
+		ingredients.put("base", baseIngredients);
+		ingredients.put("additional", additionalIngredients);
+		
+		return super.view("menu/hot-drinks/add-coffee", "ingredients", ingredients);
+	}
+	
+	@GetMapping("/add/tea")
+	public ModelAndView getAddTea() {
+		Map<String, List<IngredientView>> ingredients = new HashMap<>();
+		List<IngredientView> baseIngredients = this.ingredientService.getAllBaseTeaIngredients();
+		List<IngredientView> additionalIngredients = this.ingredientService.getAllAdditionalTeaIngredients();
+		ingredients.put("base", baseIngredients);
+		ingredients.put("additional", additionalIngredients);
+		
+		return super.view("menu/hot-drinks/add-tea", "ingredients", ingredients);
+	}
+	
+	@PostMapping("/add/coffee")
+	public ModelAndView postAddCoffee(@ModelAttribute HotDrinkDto hotDrinkDto) {
+		this.hotDrinkService.persist(hotDrinkDto, HotDrinkType.COFFEE);
+		
+		return super.redirect("/menu/add/coffee");
+	}
+	
+	@PostMapping("/add/tea")
+	public ModelAndView postAddTea(@ModelAttribute HotDrinkDto hotDrinkDto) {
+		this.hotDrinkService.persist(hotDrinkDto, HotDrinkType.TEA);
+		
+		return super.redirect("/menu/add/tea");
 	}
 }

@@ -25,6 +25,6 @@ table, th, td {
 }
 
 .item-class div {
-	float: left;
+	clear: left;
 	border: 1px solid black;
 }

@@ -26,7 +26,7 @@ public class Ingredient {
 	private String id;
 	
     @Enumerated(value = EnumType.STRING)
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
 	private IngredientType ingredientType;
 	
     @Column(nullable = false)

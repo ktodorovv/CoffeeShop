@@ -1,11 +1,12 @@
 package com.coffee.shop.utils;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
-import org.springframework.stereotype.Component;
 
 import com.coffee.shop.utils.interfaces.ModelParser;
 
@@ -35,6 +36,16 @@ public class ModelParserImpl implements ModelParser {
 	@Override
 	public <S, D> List<D> convert(List<S> sourceList, Class<D> destinationClass) {
 		List<D> convertedObjects = new ArrayList<>();
+		for (S sObject: sourceList) {
+			D convertedObject = this.modelMapper.map(sObject, destinationClass);
+			convertedObjects.add(convertedObject);
+		}
+		return convertedObjects;
+	}
+	
+	@Override
+	public <S, D> Set<D> convert(Set<S> sourceList, Class<D> destinationClass) {
+		Set<D> convertedObjects = new HashSet<>();
 		for (S sObject: sourceList) {
 			D convertedObject = this.modelMapper.map(sObject, destinationClass);
 			convertedObjects.add(convertedObject);

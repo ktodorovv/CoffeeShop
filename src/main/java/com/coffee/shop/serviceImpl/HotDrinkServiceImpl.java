@@ -1,16 +1,22 @@
 package com.coffee.shop.serviceImpl;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
+import com.coffee.shop.entities.enums.HotDrinkType;
+import com.coffee.shop.entities.ingredients.Ingredient;
 import com.coffee.shop.entities.menuitems.HotDrink;
 import com.coffee.shop.models.binding.menuitem.HotDrinkDto;
+import com.coffee.shop.models.view.ingedient.IngredientView;
 import com.coffee.shop.models.view.menuitem.MenuItemListView;
 import com.coffee.shop.models.view.menuitem.MenuItemSingleView;
 import com.coffee.shop.repositories.HotDrinkRepository;
 import com.coffee.shop.services.HotDrinkService;
+import com.coffee.shop.services.IngredientService;
 import com.coffee.shop.utils.HotDrinkCalculator;
 import com.coffee.shop.utils.interfaces.ModelParser;
 
@@ -19,12 +25,14 @@ public class HotDrinkServiceImpl implements HotDrinkService {
 
 	private final ModelParser modelParser;
 	private final HotDrinkRepository hotDrinkRepo;
+	private final IngredientService ingredientService;
 	private final HotDrinkCalculator hotDrinkCalc;
 	
-	public HotDrinkServiceImpl(ModelParser modelParser, HotDrinkRepository hotDrinkRepo, HotDrinkCalculator hotDrinkCalc) {
+	public HotDrinkServiceImpl(ModelParser modelParser, HotDrinkRepository hotDrinkRepo, HotDrinkCalculator hotDrinkCalc, IngredientService ingredientService) {
 		this.modelParser = modelParser;
 		this.hotDrinkRepo = hotDrinkRepo;
 		this.hotDrinkCalc = hotDrinkCalc;
+		this.ingredientService = ingredientService;
 	}
 	
 	@Override
@@ -37,14 +45,18 @@ public class HotDrinkServiceImpl implements HotDrinkService {
 
 	@Override
 	public List<MenuItemListView> getAllTeas() {
-		// TODO Auto-generated method stub
-		return null;
+		List<HotDrink> teas = this.hotDrinkRepo.findAllByType(HotDrinkType.TEA.toString());
+		List<MenuItemListView> teaViews = this.convertAllHotDrinks(teas);
+		
+		return teaViews;
 	}
 
 	@Override
 	public List<MenuItemListView> getAllCoffees() {
-		// TODO Auto-generated method stub
-		return null;
+		List<HotDrink> coffees = this.hotDrinkRepo.findAllByType(HotDrinkType.COFFEE.toString());
+		List<MenuItemListView> coffeeViews = this.convertAllHotDrinks(coffees);
+		
+		return coffeeViews;
 	}
 
 	@Override
@@ -59,18 +71,22 @@ public class HotDrinkServiceImpl implements HotDrinkService {
 	}
 
 	@Override
-	public void edit(HotDrinkDto hotDrinkDto, String id) {
+	public void edit(HotDrinkDto hotDrinkDto, String id, HotDrinkType type) {
+		hotDrinkDto.setType(type);
 		HotDrink hotDrink = this.modelParser.convert(hotDrinkDto, HotDrink.class);
 		hotDrink.setId(id);
+		
+		// TODO: probably need to do additional conversion for the base and additional ingredients?
 		
 		this.hotDrinkRepo.save(hotDrink);
 	}
 
 	@Override
-	public void persist(HotDrinkDto hotDrinkDto) {
-		HotDrink hotDrink = this.modelParser.convert(hotDrinkDto, HotDrink.class);
+	public void persist(HotDrinkDto hotDrinkDto, HotDrinkType type) {
+		hotDrinkDto.setType(type);
+		HotDrink hotDrink = this.mapHotDrinkDtoToEntity(hotDrinkDto);
 		
-		this.hotDrinkRepo.save(hotDrink);
+		this.hotDrinkRepo.saveAndFlush(hotDrink);
 	}
 
 	@Override
@@ -89,5 +105,26 @@ public class HotDrinkServiceImpl implements HotDrinkService {
 		}
 		
 		return hotDrinkViews;
+	}
+	
+	// TODO: think of a more elegant solution
+	private HotDrink mapHotDrinkDtoToEntity(HotDrinkDto hotDrinkDto) {
+		String baseIngredientStr = hotDrinkDto.getBaseIngredient();
+		IngredientView baseIngredientView = this.ingredientService.getOneByName(baseIngredientStr);
+		Set<String> additionalIngredientsStr = hotDrinkDto.getAdditionalIngredients();
+		Set<IngredientView> additionalIngredientViews = new HashSet<>();
+		for (String ing : additionalIngredientsStr) {
+			IngredientView additionalIngredientView = this.ingredientService.getOneByName(ing);
+			additionalIngredientViews.add(additionalIngredientView);
+		}
+		
+		Ingredient baseIngredient = this.modelParser.convert(baseIngredientView, Ingredient.class);
+		Set<Ingredient> additionalIngredients = this.modelParser.convert(additionalIngredientViews, Ingredient.class);
+		
+		HotDrink hotDrink = this.modelParser.convert(hotDrinkDto, HotDrink.class);
+		hotDrink.setBaseIngredient(baseIngredient);
+		hotDrink.setAdditionalIngredients(additionalIngredients);
+		
+		return hotDrink;
 	}
 }

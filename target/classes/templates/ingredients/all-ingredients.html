@@ -15,6 +15,7 @@
 		<div th:text="${ingredient.getPrice()}"></div>
 		<div th:text="${ingredient.getQuantity()}"></div>
 		<div><a th:href="@{/ingredients/edit/{id}(id=${ingredient.getId()})}">Edit</a></div>
+		<br/>
 	</div>
 </body>
 </html>
