@@ -186,4 +186,28 @@ public class MenuItemController extends BaseController {
 		
 		return super.redirect("/menu/add/tea");
 	}
+	
+	@GetMapping("/edit/tea/{id}")
+	public ModelAndView getEditTea() {
+		// TODO
+		return null;
+	}
+	
+	@PostMapping("/edit/tea/{id}")
+	public ModelAndView postEditTea() {
+		// TODO
+		return null;
+	}
+	
+	@GetMapping("/edit/coffee/{id}")
+	public ModelAndView getEditCoffee() {
+		// TODO
+		return null;
+	}
+	
+	@PostMapping("/edit/coffee/{id}")
+	public ModelAndView postEditCoffee() {
+		// TODO
+		return null;
+	}
 }
