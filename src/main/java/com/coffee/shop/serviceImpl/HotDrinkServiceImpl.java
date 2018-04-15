@@ -12,6 +12,7 @@ import com.coffee.shop.entities.ingredients.Ingredient;
 import com.coffee.shop.entities.menuitems.HotDrink;
 import com.coffee.shop.models.binding.menuitem.HotDrinkDto;
 import com.coffee.shop.models.view.ingedient.IngredientView;
+import com.coffee.shop.models.view.menuitem.HotDrinkEditObjectView;
 import com.coffee.shop.models.view.menuitem.MenuItemListView;
 import com.coffee.shop.models.view.menuitem.MenuItemSingleView;
 import com.coffee.shop.repositories.HotDrinkRepository;
@@ -73,10 +74,8 @@ public class HotDrinkServiceImpl implements HotDrinkService {
 	@Override
 	public void edit(HotDrinkDto hotDrinkDto, String id, HotDrinkType type) {
 		hotDrinkDto.setType(type);
-		HotDrink hotDrink = this.modelParser.convert(hotDrinkDto, HotDrink.class);
+		HotDrink hotDrink = this.mapHotDrinkDtoToEntity(hotDrinkDto);
 		hotDrink.setId(id);
-		
-		// TODO: probably need to do additional conversion for the base and additional ingredients?
 		
 		this.hotDrinkRepo.save(hotDrink);
 	}
@@ -126,5 +125,33 @@ public class HotDrinkServiceImpl implements HotDrinkService {
 		hotDrink.setAdditionalIngredients(additionalIngredients);
 		
 		return hotDrink;
+	}
+
+	// TODO: better solution?
+	@Override
+	public HotDrinkEditObjectView getOneForEditTea(String id) {
+		MenuItemSingleView menuItem = this.getOneById(id);
+		List<IngredientView> baseIngredients = this.ingredientService.getAllBaseTeaIngredients();
+		List<IngredientView> additionalIngredients = this.ingredientService.getAllAdditionalTeaIngredients();
+		HotDrinkEditObjectView hotDrinkEditObjectView = new HotDrinkEditObjectView();
+		hotDrinkEditObjectView.setHotDrink(menuItem);
+		hotDrinkEditObjectView.setAllBaseIngredients(baseIngredients);
+		hotDrinkEditObjectView.setAllAdditionalIngredients(additionalIngredients);
+		
+		return hotDrinkEditObjectView;
+	}
+	
+	
+	@Override
+	public HotDrinkEditObjectView getOneForEditCoffee(String id) {
+		MenuItemSingleView menuItem = this.getOneById(id);
+		List<IngredientView> baseIngredients = this.ingredientService.getAllBaseCoffeeIngredients();
+		List<IngredientView> additionalIngredients = this.ingredientService.getAllAdditionalCoffeeIngredients();
+		HotDrinkEditObjectView hotDrinkEditObjectView = new HotDrinkEditObjectView();
+		hotDrinkEditObjectView.setHotDrink(menuItem);
+		hotDrinkEditObjectView.setAllBaseIngredients(baseIngredients);
+		hotDrinkEditObjectView.setAllAdditionalIngredients(additionalIngredients);
+		
+		return hotDrinkEditObjectView;
 	}
 }

@@ -19,6 +19,7 @@ import com.coffee.shop.models.binding.menuitem.ColdDrinkDto;
 import com.coffee.shop.models.binding.menuitem.FoodDto;
 import com.coffee.shop.models.binding.menuitem.HotDrinkDto;
 import com.coffee.shop.models.view.ingedient.IngredientView;
+import com.coffee.shop.models.view.menuitem.HotDrinkEditObjectView;
 import com.coffee.shop.models.view.menuitem.MenuItemListView;
 import com.coffee.shop.models.view.menuitem.MenuItemSingleView;
 import com.coffee.shop.services.ColdDrinkService;
@@ -188,26 +189,30 @@ public class MenuItemController extends BaseController {
 	}
 	
 	@GetMapping("/edit/tea/{id}")
-	public ModelAndView getEditTea() {
-		// TODO
-		return null;
+	public ModelAndView getEditTea(@PathVariable String id) {
+		HotDrinkEditObjectView hotDrink = this.hotDrinkService.getOneForEditTea(id);
+		
+		return super.view("menu/hot-drinks/edit-hot-drink", "hotDrink", hotDrink);
 	}
 	
 	@PostMapping("/edit/tea/{id}")
-	public ModelAndView postEditTea() {
-		// TODO
-		return null;
+	public ModelAndView postEditTea(@ModelAttribute HotDrinkDto hotDrinkDto, @PathVariable String id) {
+		this.hotDrinkService.edit(hotDrinkDto, id, HotDrinkType.TEA);
+		
+		return super.redirect("/menu/all/hot-drinks/tea");
 	}
 	
 	@GetMapping("/edit/coffee/{id}")
-	public ModelAndView getEditCoffee() {
-		// TODO
-		return null;
+	public ModelAndView getEditCoffee(@PathVariable String id) {
+		HotDrinkEditObjectView hotDrink = this.hotDrinkService.getOneForEditCoffee(id);
+		
+		return super.view("menu/hot-drinks/edit-hot-drink", "hotDrink", hotDrink);
 	}
 	
 	@PostMapping("/edit/coffee/{id}")
-	public ModelAndView postEditCoffee() {
-		// TODO
-		return null;
+	public ModelAndView postEditCoffee(@ModelAttribute HotDrinkDto hotDrinkDto, @PathVariable String id) {
+		this.hotDrinkService.edit(hotDrinkDto, id, HotDrinkType.COFFEE);
+		
+		return super.redirect("/menu/all/hot-drinks/coffee");
 	}
 }
