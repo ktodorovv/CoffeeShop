@@ -19,9 +19,14 @@
 	<div th:text="|${menuItem.getCalories()} calories|"></div>
 	<h1>Quantity(in g/ml)</h1>
 	<div th:text="|${menuItem.getQuantity()} grams|"></div>
-<!-- 		TODO: -->
-<!-- 		type -->
-<!-- 		base ingredient -->
-<!-- 		additional ingredients -->
+	<th:block th:if="${menuItem?.getBaseIngredient()}">
+		<h1>Type</h1>
+		<div th:text="${menuItem.getType()}"></div>
+		<h1>Base Ingredient:</h1>
+		<div th:text="${menuItem.getBaseIngredient().getName()}"></div>
+		<h1>Additional Ingredients:</h1>
+		<div th:each="ing: ${menuItem.getAdditionalIngredients()}" th:text="${ing.getName()}">
+		</div>
+	</th:block>
 </body>
 </html>

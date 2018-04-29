@@ -17,15 +17,15 @@ public interface HotDrinkService {
 	
 	MenuItemSingleView getOneById(String id);
 	
-	HotDrinkEditObjectView getOneForEditTea(String id);
+	HotDrinkEditObjectView getOneForEditHotDrink(String id);
 	
-	HotDrinkEditObjectView getOneForEditCoffee(String id);
-	
-	void edit(HotDrinkDto foodDto, String id, HotDrinkType type);
+	void edit(HotDrinkDto foodDto, String id);
 	
 	void persist(HotDrinkDto hotDrinkDto, HotDrinkType type);
 	
 	// persist custom hot drink
 	
 	void remove(String id);
+	
+	HotDrinkType getHotDrinkTypeById(String id);
 }

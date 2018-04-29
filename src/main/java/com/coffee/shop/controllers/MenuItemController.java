@@ -131,8 +131,9 @@ public class MenuItemController extends BaseController {
 	// TODO: probably unite all the list views - all teas, all coffees, all foods, all cold drinks.
 	// TODO: Probably use some interceptor, in order to let them know if we're adding tea, coffee, food or a cold drink.
 	
-	@GetMapping("/all/hot-drinks/{id}")
+	@GetMapping("/all/hot-drinks/get-single/{id}")
 	public ModelAndView getOneHotDrink(@PathVariable String id) {
+		System.out.println("CALLING.... ID: " + id); // TODO: remove this part
 		MenuItemSingleView hotDrink = this.hotDrinkService.getOneById(id);
 		
 		return super.view("menu/individual-menu-item-view", "menuItem", hotDrink);
@@ -188,31 +189,19 @@ public class MenuItemController extends BaseController {
 		return super.redirect("/menu/add/tea");
 	}
 	
-	@GetMapping("/edit/tea/{id}")
-	public ModelAndView getEditTea(@PathVariable String id) {
-		HotDrinkEditObjectView hotDrink = this.hotDrinkService.getOneForEditTea(id);
+	@GetMapping("/edit/hot-drink/{id}")
+	public ModelAndView getEditHotDrink(@PathVariable String id) {
+		HotDrinkEditObjectView hotDrink = this.hotDrinkService.getOneForEditHotDrink(id);
 		
 		return super.view("menu/hot-drinks/edit-hot-drink", "hotDrink", hotDrink);
 	}
 	
-	@PostMapping("/edit/tea/{id}")
-	public ModelAndView postEditTea(@ModelAttribute HotDrinkDto hotDrinkDto, @PathVariable String id) {
-		this.hotDrinkService.edit(hotDrinkDto, id, HotDrinkType.TEA);
+	@PostMapping("/edit/hot-drink/{id}")
+	public ModelAndView postEditHotDrink(@ModelAttribute HotDrinkDto hotDrinkDto, @PathVariable String id) {
+		// TODO: should not be looking to the type in the controller?
+		String type = this.hotDrinkService.getHotDrinkTypeById(id).toString().toLowerCase();
+		this.hotDrinkService.edit(hotDrinkDto, id);
 		
-		return super.redirect("/menu/all/hot-drinks/tea");
-	}
-	
-	@GetMapping("/edit/coffee/{id}")
-	public ModelAndView getEditCoffee(@PathVariable String id) {
-		HotDrinkEditObjectView hotDrink = this.hotDrinkService.getOneForEditCoffee(id);
-		
-		return super.view("menu/hot-drinks/edit-hot-drink", "hotDrink", hotDrink);
-	}
-	
-	@PostMapping("/edit/coffee/{id}")
-	public ModelAndView postEditCoffee(@ModelAttribute HotDrinkDto hotDrinkDto, @PathVariable String id) {
-		this.hotDrinkService.edit(hotDrinkDto, id, HotDrinkType.COFFEE);
-		
-		return super.redirect("/menu/all/hot-drinks/coffee");
+		return super.redirect("/menu/all/hot-drinks/" + type);
 	}
 }

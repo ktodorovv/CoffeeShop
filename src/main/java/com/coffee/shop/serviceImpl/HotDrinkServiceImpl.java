@@ -46,7 +46,7 @@ public class HotDrinkServiceImpl implements HotDrinkService {
 
 	@Override
 	public List<MenuItemListView> getAllTeas() {
-		List<HotDrink> teas = this.hotDrinkRepo.findAllByType(HotDrinkType.TEA.toString());
+		List<HotDrink> teas = this.hotDrinkRepo.findAllByType(HotDrinkType.TEA);
 		List<MenuItemListView> teaViews = this.convertAllHotDrinks(teas);
 		
 		return teaViews;
@@ -54,7 +54,7 @@ public class HotDrinkServiceImpl implements HotDrinkService {
 
 	@Override
 	public List<MenuItemListView> getAllCoffees() {
-		List<HotDrink> coffees = this.hotDrinkRepo.findAllByType(HotDrinkType.COFFEE.toString());
+		List<HotDrink> coffees = this.hotDrinkRepo.findAllByType(HotDrinkType.COFFEE);
 		List<MenuItemListView> coffeeViews = this.convertAllHotDrinks(coffees);
 		
 		return coffeeViews;
@@ -72,7 +72,8 @@ public class HotDrinkServiceImpl implements HotDrinkService {
 	}
 
 	@Override
-	public void edit(HotDrinkDto hotDrinkDto, String id, HotDrinkType type) {
+	public void edit(HotDrinkDto hotDrinkDto, String id) {
+		HotDrinkType type = this.getHotDrinkTypeById(id);
 		hotDrinkDto.setType(type);
 		HotDrink hotDrink = this.mapHotDrinkDtoToEntity(hotDrinkDto);
 		hotDrink.setId(id);
@@ -129,10 +130,19 @@ public class HotDrinkServiceImpl implements HotDrinkService {
 
 	// TODO: better solution?
 	@Override
-	public HotDrinkEditObjectView getOneForEditTea(String id) {
+	public HotDrinkEditObjectView getOneForEditHotDrink(String id) {
+		HotDrinkType type = this.getHotDrinkTypeById(id);
 		MenuItemSingleView menuItem = this.getOneById(id);
-		List<IngredientView> baseIngredients = this.ingredientService.getAllBaseTeaIngredients();
-		List<IngredientView> additionalIngredients = this.ingredientService.getAllAdditionalTeaIngredients();
+		List<IngredientView> baseIngredients = null;
+		List<IngredientView> additionalIngredients = null;
+		if (type == HotDrinkType.TEA) {
+			baseIngredients = this.ingredientService.getAllBaseTeaIngredients();
+			additionalIngredients = this.ingredientService.getAllAdditionalTeaIngredients();
+		} else {
+			baseIngredients = this.ingredientService.getAllBaseCoffeeIngredients();
+			additionalIngredients = this.ingredientService.getAllAdditionalCoffeeIngredients();
+		}
+		
 		HotDrinkEditObjectView hotDrinkEditObjectView = new HotDrinkEditObjectView();
 		hotDrinkEditObjectView.setHotDrink(menuItem);
 		hotDrinkEditObjectView.setAllBaseIngredients(baseIngredients);
@@ -140,18 +150,12 @@ public class HotDrinkServiceImpl implements HotDrinkService {
 		
 		return hotDrinkEditObjectView;
 	}
-	
-	
+
 	@Override
-	public HotDrinkEditObjectView getOneForEditCoffee(String id) {
-		MenuItemSingleView menuItem = this.getOneById(id);
-		List<IngredientView> baseIngredients = this.ingredientService.getAllBaseCoffeeIngredients();
-		List<IngredientView> additionalIngredients = this.ingredientService.getAllAdditionalCoffeeIngredients();
-		HotDrinkEditObjectView hotDrinkEditObjectView = new HotDrinkEditObjectView();
-		hotDrinkEditObjectView.setHotDrink(menuItem);
-		hotDrinkEditObjectView.setAllBaseIngredients(baseIngredients);
-		hotDrinkEditObjectView.setAllAdditionalIngredients(additionalIngredients);
+	public HotDrinkType getHotDrinkTypeById(String id) {
+		HotDrink hotDrink = this.hotDrinkRepo.findOneById(id);
+		HotDrinkType type =  hotDrink.getType();
 		
-		return hotDrinkEditObjectView;
+		return type;
 	}
 }
