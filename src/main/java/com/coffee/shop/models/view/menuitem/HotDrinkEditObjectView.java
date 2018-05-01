@@ -1,6 +1,7 @@
 package com.coffee.shop.models.view.menuitem;
 
 import java.util.List;
+import java.util.Map;
 
 import com.coffee.shop.models.view.ingedient.IngredientView;
 
@@ -10,7 +11,7 @@ public class HotDrinkEditObjectView {
 	
 	private List<IngredientView> allBaseIngredients;
 	
-	private List<IngredientView> allAdditionalIngredients;
+	private Map<IngredientView, Boolean> allAdditionalIngredients;
 
 	public MenuItemSingleView getHotDrink() {
 		return hotDrink;
@@ -20,11 +21,11 @@ public class HotDrinkEditObjectView {
 		this.hotDrink = hotDrink;
 	}
 
-	public List<IngredientView> getAllAdditionalIngredients() {
+	public Map<IngredientView, Boolean> getAllAdditionalIngredients() {
 		return allAdditionalIngredients;
 	}
 
-	public void setAllAdditionalIngredients(List<IngredientView> allAdditionalIngredients) {
+	public void setAllAdditionalIngredients(Map<IngredientView, Boolean> allAdditionalIngredients) {
 		this.allAdditionalIngredients = allAdditionalIngredients;
 	}
 

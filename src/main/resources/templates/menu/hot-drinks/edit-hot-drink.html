@@ -23,9 +23,9 @@
 		<fieldset>
 			<legend>Additional ingredients</legend>
 			<div th:each="ing : ${hotDrink.getAllAdditionalIngredients()}" th:with="list = ${hotDrink.getHotDrink().getAdditionalIngredients()}">
-				<input th:if="${#lists.contains(list, ing)}" type="checkbox" th:id="${ing.getName()}" name="additionalIngredients" th:value="${ing.getName()}" checked>
-				<input th:unless="${#lists.contains(list, ing)}" type="checkbox" th:id="${ing.getName()}" name="additionalIngredients" th:value="${ing.getName()}">				
-				<label th:for="${ing.getName()}" th:text="${ing.getName()}"></label>
+				<input th:if="${ing.value}" type="checkbox" th:id="${ing.key.getName()}" name="additionalIngredients" th:value="${ing.key.getName()}" checked>
+				<input th:unless="${ing.value}" type="checkbox" th:id="${ing.key.getName()}" name="additionalIngredients" th:value="${ing.key.getName()}">				
+				<label th:for="${ing.key.getName()}" th:text="${ing.key.getName()}"></label>
 			</div>
 		</fieldset>
 		<input type="submit" value="Edit Hot Drink"/>

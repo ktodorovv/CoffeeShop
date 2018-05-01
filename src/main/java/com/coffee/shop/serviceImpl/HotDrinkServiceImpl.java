@@ -1,9 +1,13 @@
 package com.coffee.shop.serviceImpl;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import org.springframework.stereotype.Service;
 
@@ -146,7 +150,7 @@ public class HotDrinkServiceImpl implements HotDrinkService {
 		HotDrinkEditObjectView hotDrinkEditObjectView = new HotDrinkEditObjectView();
 		hotDrinkEditObjectView.setHotDrink(menuItem);
 		hotDrinkEditObjectView.setAllBaseIngredients(baseIngredients);
-		hotDrinkEditObjectView.setAllAdditionalIngredients(additionalIngredients);
+		hotDrinkEditObjectView.setAllAdditionalIngredients(this.generateAdditionalIngredientsMap(menuItem.getAdditionalIngredients(), additionalIngredients));
 		
 		return hotDrinkEditObjectView;
 	}
@@ -157,5 +161,29 @@ public class HotDrinkServiceImpl implements HotDrinkService {
 		HotDrinkType type =  hotDrink.getType();
 		
 		return type;
+	}
+	
+	// TODO: better solution?
+	private Map<IngredientView, Boolean> generateAdditionalIngredientsMap(Set<IngredientView> additionalIngredientsForItem, List<IngredientView> ingredientList) {
+		SortedMap<IngredientView, Boolean> ingredientMap = new TreeMap<>(new Comparator<IngredientView>() {
+			@Override
+			public int compare(IngredientView o1, IngredientView o2) {
+				return o1.getName().compareTo(o2.getName());
+			}
+		});
+		
+		for (IngredientView ingredient : ingredientList) {
+			boolean checked = false;
+			for (IngredientView itemIngredient : additionalIngredientsForItem ) {
+				if (ingredient.getName().equals(itemIngredient.getName())) {
+					checked = true;
+					break;
+				}
+			}
+			
+			ingredientMap.put(ingredient, checked);
+		}
+		
+		return ingredientMap;
 	}
 }
