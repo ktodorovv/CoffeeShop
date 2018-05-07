@@ -13,8 +13,8 @@
 		<div th:text="${coldDrink.getName()}"></div>
 		<div><img th:src="${coldDrink.getPictureLink()}"/></div>
 		<div th:text="|${coldDrink.getPrice()} leva|"></div>
-		<div><a class="button" th:href="@{/menu/edit/cold-drinks/{id}(id=${coldDrink.getId()})}">Edit</a></div>
-		<div><a class="button" th:href="@{/menu/all/cold-drinks/{id}(id=${coldDrink.getId()})}">View</a></div>
+		<div><a class="button" th:href="@{/menu/cold-drinks/edit/{id}(id=${coldDrink.getId()})}">Edit</a></div>
+		<div><a class="button" th:href="@{/menu/cold-drinks/{id}(id=${coldDrink.getId()})}">View</a></div>
 		<th:block th:include="~{delete-form :: delete-form-fragment}" th:with="item = ${coldDrink}"></th:block>
 		<br/>
 	</div>

@@ -8,7 +8,7 @@
 </head>
 <body>
 	<th:block th:include="~{home :: header-fragment}"></th:block>	
-	<form method="post" th:action="@{/menu/edit/hot-drink/{id}(id=${hotDrink.getHotDrink().getId()})}">
+	<form method="post" th:action="@{/menu/hot-drinks/edit/{id}(id=${hotDrink.getHotDrink().getId()})}">
 		<label>Name</label>
 		<input type="text" name="name" th:value="${hotDrink.getHotDrink().getName()}"/>
 		<label>Picture Link</label>

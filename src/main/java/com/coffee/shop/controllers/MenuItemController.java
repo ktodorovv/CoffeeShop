@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,42 +49,49 @@ public class MenuItemController extends BaseController {
 		this.ingredientService = ingredientService;
 	}
 	
-	@GetMapping("/add/cold-drink")
+	@GetMapping("/cold-drinks/add")
 	public ModelAndView getAddColdDrink() {
 		return super.view("menu/cold-drinks/add-cold-drink");
 	}
 	
-	@PostMapping("/add/cold-drink")
+	@PostMapping("/cold-drinks/add")
 	public ModelAndView postAddColdDrink(@ModelAttribute ColdDrinkDto coldDrinkDto) {
 		this.coldDrinkService.persist(coldDrinkDto);
 		
-		return super.redirect("/menu/add/cold-drink");
+		return super.redirect("/menu/cold-drinks/add");
 	}
 	
 	@GetMapping("/cold-drinks")
-	public ModelAndView getAllColdDrinks() {
+	public ModelAndView getAllColdDrinks(HttpServletRequest http) {
 		List<MenuItemListView> coldDrinks = this.coldDrinkService.getAll();
 		
 		return super.view("/menu/cold-drinks/all-cold-drinks", "coldDrinks", coldDrinks);
 	}
 	
-	@GetMapping("/all/cold-drinks/{id}")
+	@GetMapping("/cold-drinks/{id}")
 	public ModelAndView getOneColdDrink(@PathVariable String id) {
 		MenuItemSingleView menuItem = this.coldDrinkService.getOnyById(id);
 		
 		return super.view("menu/individual-menu-item-view", "menuItem", menuItem);
 	}
 	
-	@GetMapping("/edit/cold-drinks/{id}")
+	@GetMapping("/cold-drinks/edit/{id}")
 	public ModelAndView getEditColdDrink(@PathVariable String id) {
 		MenuItemSingleView menuItem = this.coldDrinkService.getOnyById(id);
 		
 		return super.view("menu/cold-drinks/edit-cold-drink", "menuItem", menuItem);
 	}
 	
-	@PostMapping("/edit/cold-drinks/{id}")
+	@PostMapping("/cold-drinks/edit/{id}")
 	public ModelAndView postEditColdDrink(@ModelAttribute ColdDrinkDto coldDrinkDto, @PathVariable String id) {
 		this.coldDrinkService.edit(coldDrinkDto, id);
+		
+		return super.redirect("/menu/cold-drinks");
+	}
+	
+	@PostMapping("/cold-drinks/delete/{id}")
+	public ModelAndView postDeleteColdDrink(@PathVariable String id) {
+		this.coldDrinkService.removeById(id);
 		
 		return super.redirect("/menu/cold-drinks");
 	}
@@ -94,44 +103,51 @@ public class MenuItemController extends BaseController {
 		return super.view("menu/food/all-foods", "foods", foods);
 	}
 	
-	@GetMapping("add/food")
+	@GetMapping("/food/add")
 	public ModelAndView getAddFood() {
 		return super.view("menu/food/add-food", "foodTypes", FoodType.values());
 	}
 	
-	@PostMapping("/add/food")
+	@PostMapping("/food/add")
 	public ModelAndView postAddFood(@ModelAttribute FoodDto foodDto) {
 		this.foodService.persist(foodDto);
 		
-		return super.redirect("/menu/add/food");
+		return super.redirect("/menu/food/add");
 	}
 	
-	@GetMapping("/edit/food/{id}")
+	@GetMapping("/food/edit/{id}")
 	public ModelAndView getEditFood(@PathVariable String id) {
 		MenuItemSingleView food = this.foodService.getOnyById(id);
 		
 		return super.view("menu/food/edit-food", "food", food);
 	}
 	
-	@PostMapping("/edit/food/{id}")
+	@PostMapping("/food/edit/{id}")
 	public ModelAndView postEditFood(@ModelAttribute FoodDto foodDto, @PathVariable String id) {
 		this.foodService.edit(foodDto, id);
 		
 		return super.redirect("/menu/food");
 	}
 	
-	@GetMapping("/all/food/{id}")
+	@GetMapping("/food/{id}")
 	public ModelAndView getOneFood(@PathVariable String id) {
 		MenuItemSingleView food = this.foodService.getOnyById(id);
 		
 		return super.view("menu/individual-menu-item-view", "menuItem", food);
 	}
 	
+	@PostMapping("/food/delete/{id}")
+	public ModelAndView postDeleteFood(@PathVariable String id) {
+		this.foodService.removeById(id);
+		
+		return super.redirect("/menu/food");
+	}
+	
 	// HOT DRINKS
 	// TODO: probably unite all the list views - all teas, all coffees, all foods, all cold drinks.
 	// TODO: Probably use some interceptor, in order to let them know if we're adding tea, coffee, food or a cold drink.
 	
-	@GetMapping("/all/hot-drinks/get-single/{id}")
+	@GetMapping("/hot-drinks/{id}")
 	public ModelAndView getOneHotDrink(@PathVariable String id) {
 		System.out.println("CALLING.... ID: " + id); // TODO: remove this part
 		MenuItemSingleView hotDrink = this.hotDrinkService.getOneById(id);
@@ -139,14 +155,14 @@ public class MenuItemController extends BaseController {
 		return super.view("menu/individual-menu-item-view", "menuItem", hotDrink);
 	}
 	
-	@GetMapping("/all/hot-drinks/tea")
+	@GetMapping("/hot-drinks/tea")
 	public ModelAndView getAllTeas() {
 		List<MenuItemListView> teas = this.hotDrinkService.getAllTeas();
 		
 		return super.view("menu/hot-drinks/all-hot-drinks", "hotDrinks", teas);
 	}
 	
-	@GetMapping("/all/hot-drinks/coffee")
+	@GetMapping("/hot-drinks/coffee")
 	public ModelAndView getAllCoffees() {
 		List<MenuItemListView> coffees = this.hotDrinkService.getAllCoffees();
 	
@@ -154,7 +170,7 @@ public class MenuItemController extends BaseController {
 	}
 	
 	// TODO: why did i use separate templates for adding coffee and tea?
-	@GetMapping("/add/coffee")
+	@GetMapping("/hot-drinks/coffee/add")
 	public ModelAndView getAddCoffee() {
 		Map<String, List<IngredientView>> ingredients = new HashMap<>();
 		List<IngredientView> baseIngredients = this.ingredientService.getAllBaseCoffeeIngredients();
@@ -165,7 +181,7 @@ public class MenuItemController extends BaseController {
 		return super.view("menu/hot-drinks/add-coffee", "ingredients", ingredients);
 	}
 	
-	@GetMapping("/add/tea")
+	@GetMapping("/hot-drinks/tea/add")
 	public ModelAndView getAddTea() {
 		Map<String, List<IngredientView>> ingredients = new HashMap<>();
 		List<IngredientView> baseIngredients = this.ingredientService.getAllBaseTeaIngredients();
@@ -176,55 +192,41 @@ public class MenuItemController extends BaseController {
 		return super.view("menu/hot-drinks/add-tea", "ingredients", ingredients);
 	}
 	
-	@PostMapping("/add/coffee")
+	@PostMapping("/hot-drinks/coffee/add")
 	public ModelAndView postAddCoffee(@ModelAttribute HotDrinkDto hotDrinkDto) {
 		this.hotDrinkService.persist(hotDrinkDto, HotDrinkType.COFFEE);
 		
-		return super.redirect("/menu/add/coffee");
+		return super.redirect("/menu/hot-drinks/coffee/add");
 	}
 	
-	@PostMapping("/add/tea")
+	@PostMapping("/hot-drinks/tea/add")
 	public ModelAndView postAddTea(@ModelAttribute HotDrinkDto hotDrinkDto) {
 		this.hotDrinkService.persist(hotDrinkDto, HotDrinkType.TEA);
 		
-		return super.redirect("/menu/add/tea");
+		return super.redirect("/menu/hot-drinks/tea/add");
 	}
 	
-	@GetMapping("/edit/hot-drink/{id}")
+	@GetMapping("/hot-drinks/edit/{id}")
 	public ModelAndView getEditHotDrink(@PathVariable String id) {
 		HotDrinkEditObjectView hotDrink = this.hotDrinkService.getOneForEditHotDrink(id);
 		
 		return super.view("menu/hot-drinks/edit-hot-drink", "hotDrink", hotDrink);
 	}
 	
-	@PostMapping("/edit/hot-drink/{id}")
+	@PostMapping("/hot-drinks/edit/{id}")
 	public ModelAndView postEditHotDrink(@ModelAttribute HotDrinkDto hotDrinkDto, @PathVariable String id) {
 		// TODO: should not be looking to the type in the controller?
 		String type = this.hotDrinkService.getHotDrinkTypeById(id).toString().toLowerCase();
 		this.hotDrinkService.edit(hotDrinkDto, id);
 		
-		return super.redirect("/menu/all/hot-drinks/" + type);
+		return super.redirect("/menu/hot-drinks/" + type);
 	}
 	
-	@PostMapping("/all/hot-drinks/delete/{id}")
+	@PostMapping("/hot-drinks/delete/{id}")
 	public ModelAndView postDeleteHotDrink(@PathVariable String id) {
 		this.hotDrinkService.remove(id);
 		
 		// TODO: should redirect to all teas and all coffees respectively
 		return super.redirect("/home");
-	}
-	
-	@PostMapping("/cold-drinks/delete/{id}")
-	public ModelAndView postDeleteColdDrink(@PathVariable String id) {
-		this.coldDrinkService.removeById(id);
-		
-		return super.redirect("/menu/cold-drinks");
-	}
-	
-	@PostMapping("/food/delete/{id}")
-	public ModelAndView postDeleteFood(@PathVariable String id) {
-		this.foodService.removeById(id);
-		
-		return super.redirect("/menu/food");
 	}
 }
