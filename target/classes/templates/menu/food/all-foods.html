@@ -15,7 +15,7 @@
 		<div th:text="|${food.getPrice()} leva|"></div>
 		<div><a class="button" th:href="@{/menu/edit/food/{id}(id=${food.getId()})}">Edit</a></div>
 		<div><a class="button" th:href="@{/menu/all/food/{id}(id=${food.getId()})}">View</a></div>
-		<div><a class="button">Delete</a></div>
+		<th:block th:include="~{delete-form :: delete-form-fragment}" th:with="item = ${food}"></th:block>
 		<br/>
 	</div>
 </body>

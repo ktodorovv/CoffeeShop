@@ -15,6 +15,7 @@
 		<div th:text="${ingredient.getPrice()}"></div>
 		<div th:text="${ingredient.getQuantity()}"></div>
 		<div><a th:href="@{/ingredients/edit/{id}(id=${ingredient.getId()})}">Edit</a></div>
+		<th:block th:include="~{delete-form :: delete-form-fragment}" th:with="item = ${ingredient}"></th:block>
 		<br/>
 	</div>
 </body>

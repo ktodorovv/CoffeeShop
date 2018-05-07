@@ -153,6 +153,7 @@ public class MenuItemController extends BaseController {
 		return super.view("menu/hot-drinks/all-hot-drinks", "hotDrinks", coffees);
 	}
 	
+	// TODO: why did i use separate templates for adding coffee and tea?
 	@GetMapping("/add/coffee")
 	public ModelAndView getAddCoffee() {
 		Map<String, List<IngredientView>> ingredients = new HashMap<>();
@@ -203,5 +204,27 @@ public class MenuItemController extends BaseController {
 		this.hotDrinkService.edit(hotDrinkDto, id);
 		
 		return super.redirect("/menu/all/hot-drinks/" + type);
+	}
+	
+	@PostMapping("/all/hot-drinks/delete/{id}")
+	public ModelAndView postDeleteHotDrink(@PathVariable String id) {
+		this.hotDrinkService.remove(id);
+		
+		// TODO: should redirect to all teas and all coffees respectively
+		return super.redirect("/home");
+	}
+	
+	@PostMapping("/cold-drinks/delete/{id}")
+	public ModelAndView postDeleteColdDrink(@PathVariable String id) {
+		this.coldDrinkService.removeById(id);
+		
+		return super.redirect("/menu/cold-drinks");
+	}
+	
+	@PostMapping("/food/delete/{id}")
+	public ModelAndView postDeleteFood(@PathVariable String id) {
+		this.foodService.removeById(id);
+		
+		return super.redirect("/menu/food");
 	}
 }

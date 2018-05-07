@@ -59,4 +59,11 @@ public class IngredientController extends BaseController {
 		
 		return super.redirect("/ingredients/all");
 	}
+	
+	@PostMapping("/delete/{id}")
+	public ModelAndView postDeleteIngredient(@PathVariable String id) {
+		this.ingredientService.removeById(id);
+		
+		return super.redirect("/ingredients/all");
+	}
 }
