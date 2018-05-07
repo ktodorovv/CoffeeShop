@@ -61,7 +61,7 @@ public class MenuItemController extends BaseController {
 		return super.redirect("/menu/cold-drinks/add");
 	}
 	
-	@GetMapping("/cold-drinks")
+	@GetMapping("/cold-drinks/all")
 	public ModelAndView getAllColdDrinks(HttpServletRequest http) {
 		List<MenuItemListView> coldDrinks = this.coldDrinkService.getAll();
 		
@@ -86,17 +86,17 @@ public class MenuItemController extends BaseController {
 	public ModelAndView postEditColdDrink(@ModelAttribute ColdDrinkDto coldDrinkDto, @PathVariable String id) {
 		this.coldDrinkService.edit(coldDrinkDto, id);
 		
-		return super.redirect("/menu/cold-drinks");
+		return super.redirect("/menu/cold-drinks/all");
 	}
 	
 	@PostMapping("/cold-drinks/delete/{id}")
 	public ModelAndView postDeleteColdDrink(@PathVariable String id) {
 		this.coldDrinkService.removeById(id);
 		
-		return super.redirect("/menu/cold-drinks");
+		return super.redirect("/menu/cold-drinks/all");
 	}
 	
-	@GetMapping("/food")
+	@GetMapping("/food/all")
 	public ModelAndView getAllFoods() {
 		List<MenuItemListView> foods = this.foodService.getAll();
 		
@@ -126,7 +126,7 @@ public class MenuItemController extends BaseController {
 	public ModelAndView postEditFood(@ModelAttribute FoodDto foodDto, @PathVariable String id) {
 		this.foodService.edit(foodDto, id);
 		
-		return super.redirect("/menu/food");
+		return super.redirect("/menu/food/all");
 	}
 	
 	@GetMapping("/food/{id}")
@@ -140,7 +140,7 @@ public class MenuItemController extends BaseController {
 	public ModelAndView postDeleteFood(@PathVariable String id) {
 		this.foodService.removeById(id);
 		
-		return super.redirect("/menu/food");
+		return super.redirect("/menu/food/all");
 	}
 	
 	// HOT DRINKS
