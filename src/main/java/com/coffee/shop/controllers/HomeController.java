@@ -11,4 +11,9 @@ public class HomeController extends BaseController {
 	public ModelAndView gethome() {
 		return super.view("home");
 	}
+	
+	@GetMapping("/about")
+	public ModelAndView getAbout() {
+		return super.view("about");
+	}
 }

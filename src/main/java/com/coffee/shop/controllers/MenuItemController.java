@@ -149,7 +149,6 @@ public class MenuItemController extends BaseController {
 	
 	@GetMapping("/hot-drinks/{id}")
 	public ModelAndView getOneHotDrink(@PathVariable String id) {
-		System.out.println("CALLING.... ID: " + id); // TODO: remove this part
 		MenuItemSingleView hotDrink = this.hotDrinkService.getOneById(id);
 		
 		return super.view("menu/individual-menu-item-view", "menuItem", hotDrink);
@@ -215,7 +214,7 @@ public class MenuItemController extends BaseController {
 	
 	@PostMapping("/hot-drinks/edit/{id}")
 	public ModelAndView postEditHotDrink(@ModelAttribute HotDrinkDto hotDrinkDto, @PathVariable String id) {
-		// TODO: should not be looking to the type in the controller?
+		// TODO: should not be looking for the type in the controller?
 		String type = this.hotDrinkService.getHotDrinkTypeById(id).toString().toLowerCase();
 		this.hotDrinkService.edit(hotDrinkDto, id);
 		

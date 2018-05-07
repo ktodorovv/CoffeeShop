@@ -2,8 +2,11 @@ package com.coffee.shop.controllers;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,7 +43,12 @@ public class IngredientController extends BaseController {
 	}
 	
 	@PostMapping("/add")
-	public ModelAndView postAddIngredient(@ModelAttribute IngredientDto ingredientDto) {
+	public ModelAndView postAddIngredient(@Valid @ModelAttribute IngredientDto ingredientDto, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			// TODO: somehow include the errors!
+			return super.view("ingredients/add-ingredient", "types", IngredientType.values());
+		}
+		
 		this.ingredientService.persist(ingredientDto);
 		
 		return super.redirect("/ingredients/add");
@@ -54,7 +62,13 @@ public class IngredientController extends BaseController {
 	}
 	
 	@PostMapping("/edit/{id}")
-	public ModelAndView postEditIngredient(@PathVariable String id, @ModelAttribute IngredientDto ingredientDto) {
+	public ModelAndView postEditIngredient(@PathVariable String id, @Valid @ModelAttribute IngredientDto ingredientDto, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			IngredientView ingredient = this.ingredientService.getOneById(id);
+			// TODO: somehow include the errors!
+			return super.view("/ingredients/edit-ingredient", "ingredient", ingredient);
+		}
+		
 		this.ingredientService.editAdditionalIngredient(ingredientDto, id);
 		
 		return super.redirect("/ingredients/all");

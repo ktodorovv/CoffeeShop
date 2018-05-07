@@ -1,17 +1,31 @@
 package com.coffee.shop.models.binding.ingredient;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.Size;
+
+import com.coffee.shop.constants.ErrorMessages;
 import com.coffee.shop.entities.enums.IngredientType;
 
 public class IngredientDto {
 	
 	private IngredientType ingredientType;
 	
+	@NotNull(message = ErrorMessages.BLANK_FIELD_ERROR)
+	@Size(min = 2, max = 30, message = "Size must be between 2 and 30 characters!")
 	private String name;
 	
+	@NotNull(message = ErrorMessages.BLANK_FIELD_ERROR)
+	@PositiveOrZero(message = ErrorMessages.NO_NUMBER_MESSAGE)
 	private double calories;
 	
+	@NotNull(message = ErrorMessages.BLANK_FIELD_ERROR)
+	@PositiveOrZero(message = ErrorMessages.NO_NUMBER_MESSAGE)
 	private double price;
 	
+	@NotNull(message = ErrorMessages.BLANK_FIELD_ERROR)
+	@PositiveOrZero(message = ErrorMessages.NO_NUMBER_MESSAGE)
 	private double quantity;
 
 	public IngredientType getIngredientType() {
