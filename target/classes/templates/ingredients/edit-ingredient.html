@@ -8,24 +8,28 @@
 </head>
 <body>
 	<th:block th:include="~{home :: header-fragment}"></th:block>	
-	<form method="post" th:action="@{/ingredients/edit/{id}(id=${ingredient.getId()})}">
+	<form method="post" th:object="${ingredientDto}">
 		<label>Type</label>
 		<select name="ingredientType">
-			<th:block th:each="t : ${ingredient.getIngredientType().values()}">
-				<th:block th:switch="${ingredient.getIngredientType()}">
+			<th:block th:each="t : *{getIngredientType().values()}">
+				<th:block th:switch="*{getIngredientType()}">
 					<option th:case="${t}" th:value="${t}" th:text="${t}" selected></option>
 					<option th:case="*" th:value="${t}" th:text="${t}"></option>
 				</th:block>
 			</th:block>
 		</select>
 		<label>Name</label>
-		<input type="text" name="name" th:value="${ingredient.getName()}"/>
+		<input type="text" th:field="*{name}"/>
+		<p th:each="error : ${#fields.errors('name')}" th:text="${error}" class="alert-message">Error message</p>
 		<label>Calories</label>
-		<input name="calories" type="number" min="0.00" step="0.01" th:value="${ingredient.getCalories()}"/>
+		<input th:field="*{calories}" type="number" min="0.00" step="0.01"/>
+		<p th:each="error : ${#fields.errors('calories')}" th:text="${error}" class="alert-message">Error message</p>
 		<label>Price</label>
-		<input name="price" type="number" min="0.00" step="0.01" th:value="${ingredient.getPrice()}"/>
+		<input th:field="*{price}" type="number" min="0.00" step="0.01"/>
+		<p th:each="error : ${#fields.errors('price')}" th:text="${error}" class="alert-message">Error message</p>
 		<label>Quantity (in grams)</label>
-		<input name="quantity" type="number" min="0.00" step="0.01" th:value="${ingredient.getQuantity()}"/>
+		<input th:field="*{quantity}" type="number" min="0.00" step="0.01"/>
+		<p th:each="error : ${#fields.errors('quantity')}" th:text="${error}" class="alert-message">Error message</p>
 		<input type="submit" value="Edit Ingredient"/>
 	</form>
 </body>

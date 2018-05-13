@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -38,14 +39,13 @@ public class IngredientController extends BaseController {
 	}
 	
 	@GetMapping("/add")
-	public ModelAndView getAddIngredient() {		
+	public ModelAndView getAddIngredient(@ModelAttribute IngredientDto ingredientDto) {		
 		return super.view("ingredients/add-ingredient", "types", IngredientType.values());
 	}
 	
 	@PostMapping("/add")
 	public ModelAndView postAddIngredient(@Valid @ModelAttribute IngredientDto ingredientDto, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
-			// TODO: somehow include the errors!
 			return super.view("ingredients/add-ingredient", "types", IngredientType.values());
 		}
 		
@@ -58,18 +58,18 @@ public class IngredientController extends BaseController {
 	public ModelAndView getEditIngredient(@PathVariable String id) {
 		IngredientView ingredient = this.ingredientService.getOneById(id);
 		
-		return super.view("/ingredients/edit-ingredient", "ingredient", ingredient);
+		return super.view("/ingredients/edit-ingredient", "ingredientDto", ingredient);
 	}
 	
 	@PostMapping("/edit/{id}")
-	public ModelAndView postEditIngredient(@PathVariable String id, @Valid @ModelAttribute IngredientDto ingredientDto, BindingResult bindingResult) {
+	public ModelAndView postEditIngredient(@Valid @ModelAttribute IngredientDto ingredient, BindingResult bindingResult, @PathVariable String id) {
 		if (bindingResult.hasErrors()) {
-			IngredientView ingredient = this.ingredientService.getOneById(id);
-			// TODO: somehow include the errors!
-			return super.view("/ingredients/edit-ingredient", "ingredient", ingredient);
+//			IngredientView ingredient = this.ingredientService.getOneById(id);
+			
+			return super.view("/ingredients/edit-ingredient");
 		}
 		
-		this.ingredientService.editAdditionalIngredient(ingredientDto, id);
+		this.ingredientService.editAdditionalIngredient(ingredient, id);
 		
 		return super.redirect("/ingredients/all");
 	}
