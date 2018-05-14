@@ -1,19 +1,34 @@
 package com.coffee.shop.models.binding.menuitem;
 
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+import com.coffee.shop.constants.ErrorMessages;
 import com.coffee.shop.entities.enums.FoodType;
 
 public class FoodDto {
 	
+	@NotNull(message = ErrorMessages.BLANK_FIELD_ERROR)
+	@NotBlank(message = ErrorMessages.BLANK_FIELD_ERROR)
+	@Max(value = 40)
 	private String name;
 	
 	private String pictureLink;
 	
 	private FoodType foodType;
 	
+	@NotNull(message = ErrorMessages.BLANK_FIELD_ERROR)
+	@DecimalMin(value = "0.0", message = ErrorMessages.NO_NUMBER_MESSAGE)
 	private double calories;
 	
+	@NotNull(message = ErrorMessages.BLANK_FIELD_ERROR)
+	@DecimalMin(value = "0.0", message = ErrorMessages.NO_NUMBER_MESSAGE)
 	private double quantity;
 	
+	@NotNull(message = ErrorMessages.BLANK_FIELD_ERROR)
+	@DecimalMin(value = "0.0", message = ErrorMessages.NO_NUMBER_MESSAGE)
 	private double price;
 
 	public String getName() {

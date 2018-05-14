@@ -2,10 +2,18 @@ package com.coffee.shop.models.binding.menuitem;
 
 import java.util.Set;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+import com.coffee.shop.constants.ErrorMessages;
 import com.coffee.shop.entities.enums.HotDrinkType;
 
 public class HotDrinkDto {
 
+	@NotNull(message = ErrorMessages.BLANK_FIELD_ERROR)
+	@NotBlank(message = ErrorMessages.BLANK_FIELD_ERROR)
+	@Max(value = 40)
 	private String name;
 	
 	private String pictureLink;
