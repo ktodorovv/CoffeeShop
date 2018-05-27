@@ -5,9 +5,11 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -50,15 +52,37 @@ public class MenuItemController extends BaseController {
 	}
 	
 	@GetMapping("/cold-drinks/add")
-	public ModelAndView getAddColdDrink() {
+	public ModelAndView getAddColdDrink(@ModelAttribute ColdDrinkDto coldDrinkDto) {
 		return super.view("menu/cold-drinks/add-cold-drink");
 	}
 	
 	@PostMapping("/cold-drinks/add")
-	public ModelAndView postAddColdDrink(@ModelAttribute ColdDrinkDto coldDrinkDto) {
+	public ModelAndView postAddColdDrink(@Valid @ModelAttribute ColdDrinkDto coldDrinkDto, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return super.view("menu/cold-drinks/add-cold-drink");
+		}
+		
 		this.coldDrinkService.persist(coldDrinkDto);
 		
 		return super.redirect("/menu/cold-drinks/add");
+	}
+	
+	@GetMapping("/cold-drinks/edit/{id}")
+	public ModelAndView getEditColdDrink(@PathVariable String id) {
+		MenuItemSingleView menuItem = this.coldDrinkService.getOnyById(id);
+		
+		return super.view("menu/cold-drinks/edit-cold-drink", "coldDrinkDto", menuItem);
+	}
+	
+	@PostMapping("/cold-drinks/edit/{id}")
+	public ModelAndView postEditColdDrink(@Valid @ModelAttribute ColdDrinkDto coldDrinkDto, BindingResult bindingResult, @PathVariable String id) {
+		if (bindingResult.hasErrors()) {
+			return super.view("menu/cold-drinks/edit-cold-drink", "coldDrinkDto", coldDrinkDto);
+		}
+		
+		this.coldDrinkService.edit(coldDrinkDto, id);
+		
+		return super.redirect("/menu/cold-drinks/all");
 	}
 	
 	@GetMapping("/cold-drinks/all")
@@ -73,20 +97,6 @@ public class MenuItemController extends BaseController {
 		MenuItemSingleView menuItem = this.coldDrinkService.getOnyById(id);
 		
 		return super.view("menu/individual-menu-item-view", "menuItem", menuItem);
-	}
-	
-	@GetMapping("/cold-drinks/edit/{id}")
-	public ModelAndView getEditColdDrink(@PathVariable String id) {
-		MenuItemSingleView menuItem = this.coldDrinkService.getOnyById(id);
-		
-		return super.view("menu/cold-drinks/edit-cold-drink", "menuItem", menuItem);
-	}
-	
-	@PostMapping("/cold-drinks/edit/{id}")
-	public ModelAndView postEditColdDrink(@ModelAttribute ColdDrinkDto coldDrinkDto, @PathVariable String id) {
-		this.coldDrinkService.edit(coldDrinkDto, id);
-		
-		return super.redirect("/menu/cold-drinks/all");
 	}
 	
 	@PostMapping("/cold-drinks/delete/{id}")
@@ -104,12 +114,16 @@ public class MenuItemController extends BaseController {
 	}
 	
 	@GetMapping("/food/add")
-	public ModelAndView getAddFood() {
+	public ModelAndView getAddFood(@ModelAttribute FoodDto foodDto) {
 		return super.view("menu/food/add-food", "foodTypes", FoodType.values());
 	}
 	
 	@PostMapping("/food/add")
-	public ModelAndView postAddFood(@ModelAttribute FoodDto foodDto) {
+	public ModelAndView postAddFood(@Valid @ModelAttribute FoodDto foodDto, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return super.view("menu/food/add-food");
+		}
+		
 		this.foodService.persist(foodDto);
 		
 		return super.redirect("/menu/food/add");
@@ -119,11 +133,15 @@ public class MenuItemController extends BaseController {
 	public ModelAndView getEditFood(@PathVariable String id) {
 		MenuItemSingleView food = this.foodService.getOnyById(id);
 		
-		return super.view("menu/food/edit-food", "food", food);
+		return super.view("menu/food/edit-food", "foodDto", food);
 	}
 	
 	@PostMapping("/food/edit/{id}")
-	public ModelAndView postEditFood(@ModelAttribute FoodDto foodDto, @PathVariable String id) {
+	public ModelAndView postEditFood(@Valid @ModelAttribute FoodDto foodDto, BindingResult bindingResult, @PathVariable String id) {
+		if (bindingResult.hasErrors()) {
+			return super.view("menu/food/edit-food");
+		}
+		
 		this.foodService.edit(foodDto, id);
 		
 		return super.redirect("/menu/food/all");
@@ -170,7 +188,7 @@ public class MenuItemController extends BaseController {
 	
 	// TODO: why did i use separate templates for adding coffee and tea?
 	@GetMapping("/hot-drinks/coffee/add")
-	public ModelAndView getAddCoffee() {
+	public ModelAndView getAddCoffee(@ModelAttribute HotDrinkDto hotDrinkDto) {
 		Map<String, List<IngredientView>> ingredients = new HashMap<>();
 		List<IngredientView> baseIngredients = this.ingredientService.getAllBaseCoffeeIngredients();
 		List<IngredientView> additionalIngredients = this.ingredientService.getAllAdditionalCoffeeIngredients();
@@ -181,39 +199,52 @@ public class MenuItemController extends BaseController {
 	}
 	
 	@GetMapping("/hot-drinks/tea/add")
-	public ModelAndView getAddTea() {
+	public ModelAndView getAddTea(@ModelAttribute HotDrinkDto hotDrinkDto) {
 		Map<String, List<IngredientView>> ingredients = new HashMap<>();
 		List<IngredientView> baseIngredients = this.ingredientService.getAllBaseTeaIngredients();
 		List<IngredientView> additionalIngredients = this.ingredientService.getAllAdditionalTeaIngredients();
 		ingredients.put("base", baseIngredients);
 		ingredients.put("additional", additionalIngredients);
 		
-		return super.view("menu/hot-drinks/add-tea", "ingredients", ingredients);
+		return super.view("menu/hot-drinks/add-coffee", "ingredients", ingredients);
 	}
 	
 	@PostMapping("/hot-drinks/coffee/add")
-	public ModelAndView postAddCoffee(@ModelAttribute HotDrinkDto hotDrinkDto) {
+	public ModelAndView postAddCoffee(@Valid @ModelAttribute HotDrinkDto hotDrinkDto, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return this.getAddCoffee(hotDrinkDto);
+		}
+		
 		this.hotDrinkService.persist(hotDrinkDto, HotDrinkType.COFFEE);
 		
 		return super.redirect("/menu/hot-drinks/coffee/add");
 	}
 	
 	@PostMapping("/hot-drinks/tea/add")
-	public ModelAndView postAddTea(@ModelAttribute HotDrinkDto hotDrinkDto) {
+	public ModelAndView postAddTea(@Valid @ModelAttribute HotDrinkDto hotDrinkDto, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return this.getAddTea(hotDrinkDto);
+		}
+		
 		this.hotDrinkService.persist(hotDrinkDto, HotDrinkType.TEA);
 		
 		return super.redirect("/menu/hot-drinks/tea/add");
 	}
 	
 	@GetMapping("/hot-drinks/edit/{id}")
-	public ModelAndView getEditHotDrink(@PathVariable String id) {
+	public ModelAndView getEditHotDrink(@PathVariable String id, @ModelAttribute HotDrinkDto hotDrinkDto) {
 		HotDrinkEditObjectView hotDrink = this.hotDrinkService.getOneForEditHotDrink(id);
 		
 		return super.view("menu/hot-drinks/edit-hot-drink", "hotDrink", hotDrink);
 	}
 	
 	@PostMapping("/hot-drinks/edit/{id}")
-	public ModelAndView postEditHotDrink(@ModelAttribute HotDrinkDto hotDrinkDto, @PathVariable String id) {
+	public ModelAndView postEditHotDrink(@Valid @ModelAttribute HotDrinkDto hotDrinkDto, BindingResult bindingResult, @PathVariable String id) {
+		if (bindingResult.hasErrors()) {
+			
+			return this.getEditHotDrink(id, hotDrinkDto);
+		}
+		
 		// TODO: should not be looking for the type in the controller?
 		String type = this.hotDrinkService.getHotDrinkTypeById(id).toString().toLowerCase();
 		this.hotDrinkService.edit(hotDrinkDto, id);

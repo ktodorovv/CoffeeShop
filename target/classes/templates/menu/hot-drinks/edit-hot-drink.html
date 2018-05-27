@@ -7,14 +7,17 @@
 <title>My Shop</title>
 </head>
 <body>
-	<th:block th:include="~{home :: header-fragment}"></th:block>	
-	<form method="post" th:action="@{/menu/hot-drinks/edit/{id}(id=${hotDrink.getHotDrink().getId()})}">
+	<th:block th:include="~{home :: header-fragment}"></th:block>
+<!-- 	<p th:if="${hotDrinkDto != null}">Is not null!!!</p> -->
+<!-- 	<form th:if="${hotDrinkDto != null}" method="post" th:object="${hotDrinkDto}"> -->
+	<form method="post" th:object="${hotDrink.hotDrink}">
 		<label>Name</label>
-		<input type="text" name="name" th:value="${hotDrink.getHotDrink().getName()}"/>
+		<input type="text" th:field="*{name}"/>
+		<p th:each="error : ${#fields.errors('name')}" th:text="${error}" class="alert-message">Error message</p>
 		<label>Picture Link</label>
-		<input name="pictureLink" type="text" th:value="${hotDrink.getHotDrink().getPictureLink()}" />
+		<input th:field="*{pictureLink}" type="text"/>
 		<label>Base Ingredient</label>
-		<select name="baseIngredient">
+		<select th:field="*{baseIngredient}">
 			<th:block th:each="ing : ${hotDrink.getAllBaseIngredients()}" th:switch="${ing.getName()}">
 				<option th:case="${hotDrink.getHotDrink().getBaseIngredient().getName()}" th:value="${ing.getName()}" th:text="${ing.getName()}" selected></option>
 				<option th:case="*" th:value="${ing.getName()}" th:text="${ing.getName()}"></option>
@@ -23,8 +26,8 @@
 		<fieldset>
 			<legend>Additional ingredients</legend>
 			<div th:each="ing : ${hotDrink.getAllAdditionalIngredients()}" th:with="list = ${hotDrink.getHotDrink().getAdditionalIngredients()}">
-				<input th:if="${ing.value}" type="checkbox" th:id="${ing.key.getName()}" name="additionalIngredients" th:value="${ing.key.getName()}" checked>
-				<input th:unless="${ing.value}" type="checkbox" th:id="${ing.key.getName()}" name="additionalIngredients" th:value="${ing.key.getName()}">				
+				<input th:if="${ing.value}" type="checkbox" th:id="${ing.key.getName()}" th:field="*{additionalIngredients}" th:value="${ing.key.getName()}" checked>
+				<input th:unless="${ing.value}" type="checkbox" th:id="${ing.key.getName()}" th:field="*{additionalIngredients}" th:value="${ing.key.getName()}">				
 				<label th:for="${ing.key.getName()}" th:text="${ing.key.getName()}"></label>
 			</div>
 		</fieldset>
