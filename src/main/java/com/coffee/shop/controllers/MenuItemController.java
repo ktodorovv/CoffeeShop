@@ -160,9 +160,7 @@ public class MenuItemController extends BaseController {
 		
 		return super.redirect("/menu/food/all");
 	}
-	
-	// TODO: remove this one, only added it in order to test it git is working for me!
-	
+		
 	// HOT DRINKS
 	// TODO: probably unite all the list views - all teas, all coffees, all foods, all cold drinks.
 	// TODO: Probably use some interceptor, in order to let them know if we're adding tea, coffee, food or a cold drink.
