@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,7 +85,7 @@ public class MenuItemController extends BaseController {
 	}
 	
 	@GetMapping("/cold-drinks/all")
-	public ModelAndView getAllColdDrinks(HttpServletRequest http) {
+	public ModelAndView getAllColdDrinks() {
 		List<MenuItemListView> coldDrinks = this.coldDrinkService.getAll();
 		
 		return super.view("/menu/cold-drinks/all-cold-drinks", "coldDrinks", coldDrinks);
