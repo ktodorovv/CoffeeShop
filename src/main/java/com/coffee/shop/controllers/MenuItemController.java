@@ -238,15 +238,15 @@ public class MenuItemController extends BaseController {
 	}
 	
 	@PostMapping("/hot-drinks/edit/{id}")
-	public ModelAndView postEditHotDrink(@Valid @ModelAttribute HotDrinkDto hotDrinkDto, BindingResult bindingResult, @PathVariable String id) {
+	public ModelAndView postEditHotDrink(@Valid @ModelAttribute HotDrinkDto hotDrink, BindingResult bindingResult, @PathVariable String id) {
 		if (bindingResult.hasErrors()) {
 			
-			return this.getEditHotDrink(id, hotDrinkDto);
+			return this.getEditHotDrink(id, hotDrink);
 		}
 		
 		// TODO: should not be looking for the type in the controller?
 		String type = this.hotDrinkService.getHotDrinkTypeById(id).toString().toLowerCase();
-		this.hotDrinkService.edit(hotDrinkDto, id);
+		this.hotDrinkService.edit(hotDrink, id);
 		
 		return super.redirect("/menu/hot-drinks/" + type);
 	}

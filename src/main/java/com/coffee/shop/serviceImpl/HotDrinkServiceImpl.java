@@ -148,9 +148,12 @@ public class HotDrinkServiceImpl implements HotDrinkService {
 		}
 		
 		HotDrinkEditObjectView hotDrinkEditObjectView = new HotDrinkEditObjectView();
-		hotDrinkEditObjectView.setHotDrink(menuItem);
 		hotDrinkEditObjectView.setAllBaseIngredients(baseIngredients);
 		hotDrinkEditObjectView.setAllAdditionalIngredients(this.generateAdditionalIngredientsMap(menuItem.getAdditionalIngredients(), additionalIngredients));
+		hotDrinkEditObjectView.setName(menuItem.getName());
+		hotDrinkEditObjectView.setPictureLink(menuItem.getPictureLink());
+		hotDrinkEditObjectView.setAdditionalIngredients(menuItem.getAdditionalIngredients());
+		hotDrinkEditObjectView.setBaseIngredient(menuItem.getBaseIngredient());
 		
 		return hotDrinkEditObjectView;
 	}
