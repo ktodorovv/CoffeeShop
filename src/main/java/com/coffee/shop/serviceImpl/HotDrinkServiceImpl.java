@@ -76,13 +76,20 @@ public class HotDrinkServiceImpl implements HotDrinkService {
 	}
 
 	@Override
-	public void edit(HotDrinkDto hotDrinkDto, String id) {
+	public void edit(HotDrinkEditObjectView hotDrinkEditObjectView, String id) {
+		HotDrinkDto hotDrinkDto = this.turnHotDrinkEditObjectViewToDto(hotDrinkEditObjectView);
 		HotDrinkType type = this.getHotDrinkTypeById(id);
 		hotDrinkDto.setType(type);
 		HotDrink hotDrink = this.mapHotDrinkDtoToEntity(hotDrinkDto);
 		hotDrink.setId(id);
 		
 		this.hotDrinkRepo.save(hotDrink);
+	}
+	
+	private HotDrinkDto turnHotDrinkEditObjectViewToDto(HotDrinkEditObjectView hotDrinkEditObjectView) {
+		HotDrinkDto hotDrinkDto = this.modelParser.convert(hotDrinkEditObjectView, HotDrinkDto.class);
+		
+		return hotDrinkDto;
 	}
 
 	@Override
@@ -152,10 +159,20 @@ public class HotDrinkServiceImpl implements HotDrinkService {
 		hotDrinkEditObjectView.setAllAdditionalIngredients(this.generateAdditionalIngredientsMap(menuItem.getAdditionalIngredients(), additionalIngredients));
 		hotDrinkEditObjectView.setName(menuItem.getName());
 		hotDrinkEditObjectView.setPictureLink(menuItem.getPictureLink());
-		hotDrinkEditObjectView.setAdditionalIngredients(menuItem.getAdditionalIngredients());
-		hotDrinkEditObjectView.setBaseIngredient(menuItem.getBaseIngredient());
+		hotDrinkEditObjectView.setAdditionalIngredients(this.turnIngredientViewsToStrings(menuItem.getAdditionalIngredients()));
+		hotDrinkEditObjectView.setBaseIngredient(menuItem.getBaseIngredient().getName());
 		
 		return hotDrinkEditObjectView;
+	}
+	
+	// TODO: too much for a simple thing
+	private Set<String> turnIngredientViewsToStrings(Set<IngredientView> ingredientViews) {
+		Set<String> ingredientStrings = new HashSet<>();
+		for (IngredientView ingredientView : ingredientViews) {
+			ingredientStrings.add(ingredientView.getName());
+		}
+		
+		return ingredientStrings;
 	}
 
 	@Override
@@ -188,5 +205,26 @@ public class HotDrinkServiceImpl implements HotDrinkService {
 		}
 		
 		return ingredientMap;
+	}
+
+	// TODO: avoid code repetition - in this one and in the getOneForEditHotDrink there are a lot of things that are repeated
+	@Override
+	public void addAllAdditionalAndBaseIngredientsForEditHotDrink(HotDrinkEditObjectView hotDrinkEditObjectView, String id) {
+		HotDrinkType type = this.getHotDrinkTypeById(id);
+		MenuItemSingleView menuItem = this.getOneById(id);
+		List<IngredientView> baseIngredients = null;
+		List<IngredientView> additionalIngredients = null;
+		if (type == HotDrinkType.TEA) {
+			baseIngredients = this.ingredientService.getAllBaseTeaIngredients();
+			additionalIngredients = this.ingredientService.getAllAdditionalTeaIngredients();
+		} else {
+			baseIngredients = this.ingredientService.getAllBaseCoffeeIngredients();
+			additionalIngredients = this.ingredientService.getAllAdditionalCoffeeIngredients();
+		}
+		
+		Map<IngredientView, Boolean> allAdditionalIngredients = this.generateAdditionalIngredientsMap(menuItem.getAdditionalIngredients(), additionalIngredients);
+		
+		hotDrinkEditObjectView.setAllAdditionalIngredients(allAdditionalIngredients);
+		hotDrinkEditObjectView.setAllBaseIngredients(baseIngredients);
 	}
 }

@@ -19,9 +19,11 @@ public interface HotDrinkService {
 	
 	HotDrinkEditObjectView getOneForEditHotDrink(String id);
 	
-	void edit(HotDrinkDto foodDto, String id);
+	void edit(HotDrinkEditObjectView hotDrinkDto, String id);
 	
 	void persist(HotDrinkDto hotDrinkDto, HotDrinkType type);
+	
+	void addAllAdditionalAndBaseIngredientsForEditHotDrink(HotDrinkEditObjectView hotDrinkEditObjectView, String id);
 	
 	// persist custom hot drink
 	

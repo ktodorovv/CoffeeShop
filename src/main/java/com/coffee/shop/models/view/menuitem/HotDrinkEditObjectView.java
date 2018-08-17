@@ -4,6 +4,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import com.coffee.shop.constants.ErrorMessages;
 import com.coffee.shop.models.view.ingedient.IngredientView;
 
 public class HotDrinkEditObjectView {
@@ -12,13 +17,16 @@ public class HotDrinkEditObjectView {
 	
 	private Map<IngredientView, Boolean> allAdditionalIngredients;
 
+	@NotNull(message = ErrorMessages.BLANK_FIELD_ERROR)
+	@NotBlank(message = ErrorMessages.BLANK_FIELD_ERROR)
+	@Size(min = 1, max = 40, message = "Size must be between 1 and 40 chars!")
 	private String name;
 	
 	private String pictureLink;
 	
-	private IngredientView baseIngredient;
+	private String baseIngredient;
 	
-	private Set<IngredientView> additionalIngredients;
+	private Set<String> additionalIngredients;
 
 	public List<IngredientView> getAllBaseIngredients() {
 		return allBaseIngredients;
@@ -52,19 +60,19 @@ public class HotDrinkEditObjectView {
 		this.pictureLink = pictureLink;
 	}
 
-	public IngredientView getBaseIngredient() {
+	public String getBaseIngredient() {
 		return baseIngredient;
 	}
 
-	public void setBaseIngredient(IngredientView baseIngredient) {
+	public void setBaseIngredient(String baseIngredient) {
 		this.baseIngredient = baseIngredient;
 	}
 
-	public Set<IngredientView> getAdditionalIngredients() {
+	public Set<String> getAdditionalIngredients() {
 		return additionalIngredients;
 	}
 
-	public void setAdditionalIngredients(Set<IngredientView> additionalIngredients) {
+	public void setAdditionalIngredients(Set<String> additionalIngredients) {
 		this.additionalIngredients = additionalIngredients;
 	}
 }

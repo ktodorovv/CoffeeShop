@@ -231,22 +231,24 @@ public class MenuItemController extends BaseController {
 	}
 	
 	@GetMapping("/hot-drinks/edit/{id}")
-	public ModelAndView getEditHotDrink(@PathVariable String id, @ModelAttribute HotDrinkDto hotDrinkDto) {
-		HotDrinkEditObjectView hotDrink = this.hotDrinkService.getOneForEditHotDrink(id);
+	public ModelAndView getEditHotDrink(@PathVariable String id, @ModelAttribute HotDrinkEditObjectView hotDrinkEditObjectView) {
+		if (hotDrinkEditObjectView.getName() == null) {
+			hotDrinkEditObjectView = this.hotDrinkService.getOneForEditHotDrink(id);
+		}
 		
-		return super.view("menu/hot-drinks/edit-hot-drink", "hotDrink", hotDrink);
+		return super.view("menu/hot-drinks/edit-hot-drink", "hotDrinkEditObjectView", hotDrinkEditObjectView);
 	}
 	
 	@PostMapping("/hot-drinks/edit/{id}")
-	public ModelAndView postEditHotDrink(@Valid @ModelAttribute HotDrinkDto hotDrink, BindingResult bindingResult, @PathVariable String id) {
+	public ModelAndView postEditHotDrink(@Valid @ModelAttribute HotDrinkEditObjectView hotDrinkEditObjectView, BindingResult bindingResult, @PathVariable String id) {
 		if (bindingResult.hasErrors()) {
-			
-			return this.getEditHotDrink(id, hotDrink);
+			this.hotDrinkService.addAllAdditionalAndBaseIngredientsForEditHotDrink(hotDrinkEditObjectView, id);
+			return this.getEditHotDrink(id, hotDrinkEditObjectView);
 		}
 		
 		// TODO: should not be looking for the type in the controller?
 		String type = this.hotDrinkService.getHotDrinkTypeById(id).toString().toLowerCase();
-		this.hotDrinkService.edit(hotDrink, id);
+		this.hotDrinkService.edit(hotDrinkEditObjectView, id);
 		
 		return super.redirect("/menu/hot-drinks/" + type);
 	}
